@@ -29,6 +29,7 @@
         <CommandBinding Command="self:CustomCommands.Export" Executed="Command_Export_OnExecuted" />
         <CommandBinding Command="self:CustomCommands.Reload" Executed="Command_Reload_OnExecuted" />
         <CommandBinding Command="ApplicationCommands.Close"  Executed="Command_Exit_OnExecuted" />
+        <CommandBinding Command="ApplicationCommands.Help"   Executed="Command_Help_OnExecuted" />
 
     </Window.CommandBindings>
 
@@ -73,7 +74,7 @@
                 <MenuItem Header="Change Encryption Algorithm" Click="MenuItem_Settings_Algorithm_OnClick" />
             </MenuItem>
             <MenuItem Header="Help">
-				<MenuItem Header="About" />
+                <MenuItem Header="About" Command="ApplicationCommands.Help" />
             </MenuItem>
         </Menu>
 

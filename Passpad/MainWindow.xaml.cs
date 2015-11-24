@@ -114,5 +114,10 @@ namespace Passpad
 		{
 			Viewmodel.WordWrap = !Viewmodel.WordWrap;
 		}
+
+		private void Command_Help_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			new AboutWindow {Owner = this}.ShowDialog();
+		}
 	}
 }
