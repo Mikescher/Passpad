@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Passpad
 {
@@ -20,9 +11,68 @@ namespace Passpad
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private MainViewModel Viewmodel;
+
 		public MainWindow()
 		{
+			Viewmodel = new MainViewModel();
+            this.DataContext = Viewmodel;
+
 			InitializeComponent();
+		}
+
+		private void Command_New_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			Viewmodel.NewDocument();
+		}
+
+		private void Command_Open_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			Viewmodel.LoadDocument();
+		}
+
+		private void Command_Save_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			Viewmodel.SaveDocument();
+		}
+
+		private void Command_Export_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			Viewmodel.ExportDocument();
+		}
+
+		private void Command_SaveAs_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			Viewmodel.SaveDocumentAs();
+		}
+
+		private void Command_Exit_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (Viewmodel.IsChanged)
+			{
+				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				{
+					if (!Viewmodel.SaveDocument()) return;
+				}
+			}
+
+			Close();
+		}
+
+		private void Command_Reload_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			Viewmodel.ReloadDocument();
+		}
+
+		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+		{
+			var args = Environment.GetCommandLineArgs();
+
+			if (args.Length >= 2 && File.Exists(args[1]))
+			{
+				Viewmodel.File = args[1];
+				Viewmodel.ReloadDocument();
+			}
 		}
 	}
 }

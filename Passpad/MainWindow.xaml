@@ -3,10 +3,129 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Passpad"
+        xmlns:self="clr-namespace:Passpad"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:converter="clr-namespace:Passpad.WPF.Converter"
+        WindowStartupLocation="CenterScreen"
+		ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+		Loaded="MainWindow_OnLoaded"
+        d:DataContext="{d:DesignInstance self:MainViewModel}"
+        Title="{Binding Title}" MinHeight="350" MinWidth="525" Height="450" Width="800">
+
+	<Window.Resources>
+        <converter:TextToLineCountConverter x:Key="TextToLineCountConverter" />
+	</Window.Resources>
+	<Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New"    Executed="Command_New_OnExecuted" />
+        <CommandBinding Command="ApplicationCommands.Open"   Executed="Command_Open_OnExecuted" />
+        <CommandBinding Command="ApplicationCommands.Save"   Executed="Command_Save_OnExecuted" />
+        <CommandBinding Command="ApplicationCommands.SaveAs" Executed="Command_SaveAs_OnExecuted" />
+        <CommandBinding Command="self:CustomCommands.Export" Executed="Command_Export_OnExecuted" />
+        <CommandBinding Command="self:CustomCommands.Reload" Executed="Command_Reload_OnExecuted" />
+        <CommandBinding Command="ApplicationCommands.Close"  Executed="Command_Exit_OnExecuted" />
+
+    </Window.CommandBindings>
+
     <Grid>
-        
-    </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+		
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="New" Command="ApplicationCommands.New" />
+                <MenuItem Header="Open" Command="ApplicationCommands.Open" />
+                <MenuItem Header="Reload" Command="self:CustomCommands.Reload" />
+                <MenuItem Header="Save" Command="ApplicationCommands.Save" />
+                <MenuItem Header="Save As" Command="ApplicationCommands.SaveAs" />
+                <MenuItem Header="Export" Command="self:CustomCommands.Export" />
+				<Separator />
+                <MenuItem Header="Exit" Command="ApplicationCommands.Close" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo" Command="ApplicationCommands.Undo" />
+                <MenuItem Header="Redo" Command="ApplicationCommands.Redo" />
+                <Separator />
+                <MenuItem Header="Cut" Command="ApplicationCommands.Cut" />
+                <MenuItem Header="Copy" Command="ApplicationCommands.Copy" />
+                <MenuItem Header="Paste" Command="ApplicationCommands.Paste" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Normal" />
+                <MenuItem Header="Invisible" />
+                <MenuItem Header="Low Contrast (Dark)" />
+                <MenuItem Header="Low Contrast (Light)" />
+                <Separator />
+                <MenuItem Header="Word Wrap" />
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <MenuItem Header="Change Password" />
+                <MenuItem Header="Change Algorithm" />
+                <MenuItem Header="Change Password Hint" />
+            </MenuItem>
+            <MenuItem Header="Help">
+				<MenuItem Header="About" />
+            </MenuItem>
+        </Menu>
+
+        <Border Grid.Row="2" BorderBrush="Gainsboro" BorderThickness="0,0,2,2">
+            <Border BorderBrush="Gray" BorderThickness="2,2,0,0">
+                <avalonedit:TextEditor Margin="2" 
+									   ShowLineNumbers="{Binding WordWrap}" 
+									   FontSize="12"
+									   HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+                    <i:Interaction.Behaviors>
+                        <self:AvalonEditBehaviour TextBinding="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </i:Interaction.Behaviors>
+                </avalonedit:TextEditor>
+            </Border>
+        </Border>
+
+        <StatusBar Grid.Row="3" >
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+
+            <StatusBarItem Grid.Column="0">
+                <TextBlock Text="Encrypted textfile" />
+            </StatusBarItem>
+
+            <Separator Grid.Column="1" />
+
+            <StatusBarItem Grid.Column="2">
+                <TextBlock Text="{Binding Content.Length, StringFormat=length: {0}}" />
+            </StatusBarItem>
+			
+            <StatusBarItem Grid.Column="3">
+                <TextBlock Text="{Binding Content, StringFormat=lines: {0}, Converter={StaticResource TextToLineCountConverter}}" />
+            </StatusBarItem>
+
+            <Separator Grid.Column="4" />
+
+
+            <Separator Grid.Column="6" />
+
+            <StatusBarItem Grid.Column="7">
+                <TextBlock Text="TWOFISH" />
+            </StatusBarItem>
+        </StatusBar>
+	</Grid>
 </Window>
