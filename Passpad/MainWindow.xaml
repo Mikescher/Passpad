@@ -11,6 +11,7 @@
 		ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d"
 		Loaded="MainWindow_OnLoaded"
+		Icon="Ressources/icon_lock.png"
         d:DataContext="{d:DesignInstance self:MainViewModel}"
         Title="{Binding Title}" MinHeight="350" MinWidth="525" Height="450" Width="800">
 
@@ -82,7 +83,7 @@
 									   WordWrap="{Binding WordWrap}"
 									   Foreground="{Binding EditorForeground}"
 									   Background="{Binding EditorBackground}"
-									   ShowLineNumbers="true" 
+									   ShowLineNumbers="True" 
 									   FontSize="12"
 									   HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
                     <i:Interaction.Behaviors>

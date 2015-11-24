@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon_lock.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.1.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\packages\AvalonEdit.5.0.2\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
@@ -136,6 +139,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Ressources\icon_eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\icon_lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_lock.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,6 +7,7 @@
         mc:Ignorable="d"
 		ResizeMode="CanResize"
 		WindowStartupLocation="CenterOwner"
+		Icon="../Ressources/icon_lock.png"
         Title="Change password hint" Height="140" Width="300">
     <Window.Resources>
         <converter:AlgorithmToStringConverter x:Key="AlgorithmToStringConverter" />

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Passpad.Dialogs"
         mc:Ignorable="d"
 		WindowStartupLocation="CenterOwner"
+		Icon="../Ressources/icon_lock.png"
         Title="Change password hint" Height="200" Width="300">
     <Grid>
         <Grid.RowDefinitions>
