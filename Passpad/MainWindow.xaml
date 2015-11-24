@@ -14,9 +14,12 @@
         d:DataContext="{d:DesignInstance self:MainViewModel}"
         Title="{Binding Title}" MinHeight="350" MinWidth="525" Height="450" Width="800">
 
-	<Window.Resources>
-        <converter:TextToLineCountConverter x:Key="TextToLineCountConverter" />
+    <Window.Resources>
+        <converter:TextToLineCountConverter x:Key="TextToLineCountConverter" /> 
+        <converter:AlgorithmToStringConverter x:Key="AlgorithmToStringConverter" />
+        <converter:AlgorithmToDescriptionConverter x:Key="AlgorithmToDescriptionConverter" />
 	</Window.Resources>
+	
 	<Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.New"    Executed="Command_New_OnExecuted" />
         <CommandBinding Command="ApplicationCommands.Open"   Executed="Command_Open_OnExecuted" />
@@ -56,17 +59,17 @@
                 <MenuItem Header="Paste" Command="ApplicationCommands.Paste" />
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem Header="Normal" />
-                <MenuItem Header="Invisible" />
-                <MenuItem Header="Low Contrast (Dark)" />
-                <MenuItem Header="Low Contrast (Light)" />
+                <MenuItem Header="Normal" Click="MenuItem_View_Normal_OnClick" />
+                <MenuItem Header="Invisible" Click="MenuItem_View_Invisible_OnClick" />
+                <MenuItem Header="Low Contrast (Dark)" Click="MenuItem_View_LowContrastDark_OnClick" />
+                <MenuItem Header="Low Contrast (Light)" Click="MenuItem_View_LowContrastLight_OnClick" />
                 <Separator />
-                <MenuItem Header="Word Wrap" />
+                <MenuItem Header="Word Wrap" Click="MenuItem_View_WordWrap_OnClick" />
             </MenuItem>
             <MenuItem Header="Settings">
-                <MenuItem Header="Change Password" />
-                <MenuItem Header="Change Algorithm" />
-                <MenuItem Header="Change Password Hint" />
+                <MenuItem Header="Change Password" Click="MenuItem_Settings_Password_OnClick" />
+                <MenuItem Header="Change Password Hint" Click="MenuItem_Settings_Hint_OnClick" />
+                <MenuItem Header="Change Encryption Algorithm" Click="MenuItem_Settings_Algorithm_OnClick" />
             </MenuItem>
             <MenuItem Header="Help">
 				<MenuItem Header="About" />
@@ -76,7 +79,10 @@
         <Border Grid.Row="2" BorderBrush="Gainsboro" BorderThickness="0,0,2,2">
             <Border BorderBrush="Gray" BorderThickness="2,2,0,0">
                 <avalonedit:TextEditor Margin="2" 
-									   ShowLineNumbers="{Binding WordWrap}" 
+									   WordWrap="{Binding WordWrap}"
+									   Foreground="{Binding EditorForeground}"
+									   Background="{Binding EditorBackground}"
+									   ShowLineNumbers="true" 
 									   FontSize="12"
 									   HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
                     <i:Interaction.Behaviors>
@@ -105,7 +111,7 @@
             </StatusBar.ItemsPanel>
 
             <StatusBarItem Grid.Column="0">
-                <TextBlock Text="Encrypted textfile" />
+                <TextBlock Text="{Binding Algorithm, Converter={StaticResource AlgorithmToDescriptionConverter}}" />
             </StatusBarItem>
 
             <Separator Grid.Column="1" />
@@ -124,7 +130,7 @@
             <Separator Grid.Column="6" />
 
             <StatusBarItem Grid.Column="7">
-                <TextBlock Text="TWOFISH" />
+                <TextBlock Text="{Binding Algorithm, Converter={StaticResource AlgorithmToStringConverter}}" />
             </StatusBarItem>
         </StatusBar>
 	</Grid>

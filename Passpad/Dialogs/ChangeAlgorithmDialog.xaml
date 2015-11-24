@@ -1,0 +1,38 @@
+﻿<Window x:Class="Passpad.Dialogs.ChangeAlgorithmDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converter="clr-namespace:Passpad.WPF.Converter"
+        mc:Ignorable="d"
+		ResizeMode="CanResize"
+		WindowStartupLocation="CenterOwner"
+        Title="Change password hint" Height="140" Width="300">
+    <Window.Resources>
+        <converter:AlgorithmToStringConverter x:Key="AlgorithmToStringConverter" />
+    </Window.Resources>
+	
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Padding="3" Grid.Row="0" Text="Choose the encryption algorithm for this file:" TextWrapping="Wrap"  />
+
+        <ComboBox x:Name="AlgorithmBox" Grid.Row="1" Margin="5" VerticalAlignment="Top" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource AlgorithmToStringConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Content="Abort" MinWidth="75" Margin="5" Click="Button_Cancel_Click" />
+            <Button Content="OK" MinWidth="75" Margin="5" FontWeight="Bold" Click="Button_Ok_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

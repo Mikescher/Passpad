@@ -6,6 +6,6 @@ namespace Passpad
 		Normal,
 		Invisible,
 		LowContrastDark,
-		LowCOntrastLight,
+		LowContrastLight,
 	}
 }

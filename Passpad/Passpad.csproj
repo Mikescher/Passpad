@@ -65,8 +65,32 @@
     <Compile Include="AvalonEditBehaviour.cs" />
     <Compile Include="BaseViewModel\IViewModel.cs" />
     <Compile Include="BaseViewModel\ViewModel.cs" />
+    <Compile Include="Dialogs\ChangeAlgorithmDialog.xaml.cs">
+      <DependentUpon>ChangeAlgorithmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ChangeHintDialog.xaml.cs">
+      <DependentUpon>ChangeHintDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ChangePasswordDialog.xaml.cs">
+      <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Encryption\EncryptionAlgorithm.cs" />
+    <Compile Include="Theme.cs" />
+    <Compile Include="WPF\Converter\AlgorithmToDescriptionConverter.cs" />
+    <Compile Include="WPF\Converter\AlgorithmToStringConverter.cs" />
     <Compile Include="WPF\Converter\TextToLineCountConverter.cs" />
+    <Page Include="Dialogs\ChangeAlgorithmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ChangeHintDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ChangePasswordDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -110,7 +134,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Ressources\icon_eye.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
 using Microsoft.Win32;
 using Passpad.BaseViewModel;
+using Passpad.Dialogs;
 using Passpad.Encryption;
 
 namespace Passpad
@@ -52,99 +55,166 @@ namespace Passpad
 
 		//###########################################################################
 
-		private string _wordwrap;
-		public string WordWrap
+		private bool _wordwrap = true;
+		public bool WordWrap
 		{
 			get { return _wordwrap; }
 			set { _wordwrap = value; RaisePropertyChanged(); }
 		}
 
-		public void NewDocument()
+	    private Theme _theme;
+		public Theme Theme
+		{
+			get { return _theme; }
+			set { _theme = value; RaisePropertyChanged(); RaisePropertyChanged("EditorForeground"); RaisePropertyChanged("EditorBackground"); }
+		}
+
+	    public Brush EditorForeground
 	    {
-			if (IsChanged)
+		    get
+		    {
+			    switch (Theme)
+			    {
+				    case Theme.Normal: return Brushes.Black;
+				    case Theme.Invisible: return Brushes.White;
+					case Theme.LowContrastDark: return new SolidColorBrush(Color.FromRgb(128, 128, 128));
+					case Theme.LowContrastLight: return new SolidColorBrush(Color.FromRgb(192, 192, 192));
+					default: throw new ArgumentOutOfRangeException();
+			    }
+		    }
+		}
+
+		public Brush EditorBackground
+		{
+			get
 			{
-				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				switch (Theme)
 				{
-					if (!SaveDocument()) return;
+					case Theme.Normal: return Brushes.White;
+					case Theme.Invisible: return Brushes.White;
+					case Theme.LowContrastDark: return new SolidColorBrush(Color.FromRgb(105, 105, 105));
+					case Theme.LowContrastLight: return new SolidColorBrush(Color.FromRgb(220, 220, 220));
+					default: throw new ArgumentOutOfRangeException();
 				}
 			}
+		}
+
+		public void NewDocument()
+	    {
+		    if (IsChanged)
+		    {
+			    if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+			    {
+				    if (!SaveDocument()) return;
+			    }
+		    }
 
 		    filePassword = null;
 		    Password = null;
 
-			fileContent = string.Empty;
-			Content = string.Empty;
+		    fileContent = string.Empty;
+		    Content = string.Empty;
 
-			fileHint = string.Empty;
-			Hint = string.Empty;
+		    fileHint = string.Empty;
+		    Hint = string.Empty;
 
 		    File = null;
 	    }
 
-		public void LoadDocument()
-		{
-			var ofd = new OpenFileDialog {Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*" };
+	    public void LoadDocument()
+	    {
+		    var ofd = new OpenFileDialog {Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*"};
 
-			if (ofd.ShowDialog() ?? false)
-			{
-				File = ofd.FileName;
+		    if (ofd.ShowDialog() ?? false)
+		    {
+			    File = ofd.FileName;
 
-				ReloadDocument();
-			}
-		}
+			    ReloadDocument();
+		    }
+	    }
 
-		public void ReloadDocument()
-		{
-			if (File == null) 
-			{
-				LoadDocument();
-				return;
-			}
-			
-			fileContent = System.IO.File.ReadAllText(File);
-			filePassword = null;
-			fileHint = string.Empty;
+	    public void ReloadDocument()
+	    {
+		    if (File == null)
+		    {
+			    LoadDocument();
+			    return;
+		    }
 
-			Content = fileContent;
-			Password = filePassword;
-			Hint = fileHint;
-		}
+		    fileContent = System.IO.File.ReadAllText(File);
+		    filePassword = null;
+		    fileHint = string.Empty;
 
-		public bool SaveDocument()
-		{
-			if (File == null) return SaveDocumentAs();
+		    Content = fileContent;
+		    Password = filePassword;
+		    Hint = fileHint;
+	    }
 
-			System.IO.File.WriteAllText(File, Content);
+	    public bool SaveDocument()
+	    {
+		    if (File == null) return SaveDocumentAs();
 
-			fileContent = Content;
-			filePassword = Password;
-			fileHint = Hint;
+		    System.IO.File.WriteAllText(File, Content);
 
-			return true;
-		}
+		    fileContent = Content;
+		    filePassword = Password;
+		    fileHint = Hint;
 
-		public bool SaveDocumentAs()
-		{
-			var sfd = new SaveFileDialog { Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*" };
+		    return true;
+	    }
 
-			if (sfd.ShowDialog() ?? false)
-			{
-				File = sfd.FileName;
+	    public bool SaveDocumentAs()
+	    {
+		    var sfd = new SaveFileDialog {Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*"};
 
-				return SaveDocument();
-			}
+		    if (sfd.ShowDialog() ?? false)
+		    {
+			    File = sfd.FileName;
 
-			return false;
-		}
+			    return SaveDocument();
+		    }
+
+		    return false;
+	    }
 
 	    public void ExportDocument()
-		{
-			var sfd = new SaveFileDialog { Filter = "Textfile (*.txt)|*.txt|All Files|*" };
+	    {
+		    var sfd = new SaveFileDialog {Filter = "Textfile (*.txt)|*.txt|All Files|*"};
 
-			if (sfd.ShowDialog() ?? false)
+		    if (sfd.ShowDialog() ?? false)
+		    {
+			    System.IO.File.WriteAllText(sfd.FileName, Content);
+		    }
+		}
+
+		public void ChangeHint(Window owner)
+		{
+			var dialog = new ChangeHintDialog();
+
+			if (dialog.ShowDialog(owner, Hint))
 			{
-				System.IO.File.WriteAllText(sfd.FileName, Content);
+				Hint = dialog.Hint;
 			}
 		}
-    }
+
+		public void ChangePassword(Window owner)
+		{
+			var dialog = new ChangePasswordDialog();
+
+			if (dialog.ShowDialog(owner, Password))
+			{
+				Password = dialog.Password;
+			}
+		}
+
+		public void ChangeAlgorithm(Window owner)
+		{
+			var dialog = new ChangeAlgorithmDialog();
+
+			if (dialog.ShowDialog(owner, Algorithm))
+			{
+				Algorithm = dialog.Algorithm;
+			}
+		}
+	}
 }

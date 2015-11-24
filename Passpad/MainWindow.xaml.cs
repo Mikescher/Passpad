@@ -74,5 +74,45 @@ namespace Passpad
 				Viewmodel.ReloadDocument();
 			}
 		}
+
+		private void MenuItem_View_Normal_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.Theme = Theme.Normal;
+		}
+
+		private void MenuItem_View_Invisible_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.Theme = Theme.Invisible;
+		}
+
+		private void MenuItem_View_LowContrastDark_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.Theme = Theme.LowContrastDark;
+		}
+
+		private void MenuItem_View_LowContrastLight_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.Theme = Theme.LowContrastLight;
+		}
+
+		private void MenuItem_Settings_Password_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.ChangePassword(this);
+		}
+
+		private void MenuItem_Settings_Algorithm_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.ChangeAlgorithm(this);
+		}
+
+		private void MenuItem_Settings_Hint_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.ChangeHint(this);
+		}
+
+		private void MenuItem_View_WordWrap_OnClick(object sender, RoutedEventArgs e)
+		{
+			Viewmodel.WordWrap = !Viewmodel.WordWrap;
+		}
 	}
 }

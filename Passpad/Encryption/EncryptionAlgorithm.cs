@@ -1,7 +1,7 @@
 ﻿
 namespace Passpad.Encryption
 {
-	enum EncryptionAlgorithm
+	public enum EncryptionAlgorithm
 	{
 		Plain,
 		Blowfish,
