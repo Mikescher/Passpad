@@ -9,7 +9,7 @@ namespace Passpad.Encryption
 		private const int KEY_SIZE = 32;
 		private readonly byte[] IV = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-		public override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, string password)
 		{
 			using (var algo = new XOR())
 			{
@@ -31,7 +31,7 @@ namespace Passpad.Encryption
 			}
 		}
 
-		public override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, string password)
 		{
 			using (var fish = new Twofish())
 			{

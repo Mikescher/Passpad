@@ -6,7 +6,7 @@ namespace Passpad.Encryption
 	{
 		private const int KEY_SIZE = 56;
 
-		public override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, string password)
 		{
 			var key = HashPassword(password, KEY_SIZE);
 
@@ -20,7 +20,7 @@ namespace Passpad.Encryption
 			return result;
 		}
 
-		public override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, string password)
 		{
 			var key = HashPassword(password, KEY_SIZE);
 			

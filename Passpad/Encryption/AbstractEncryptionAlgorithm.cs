@@ -8,6 +8,8 @@ namespace Passpad.Encryption
 {
     abstract class AbstractEncryptionAlgorithm
     {
+	    private const int HASH_LENGTH = 32;
+
 	    private readonly byte[] salt = {
 			0xEF, 0x03, 0x33, 0xC4, 0xEB, 0x4A, 0x06, 0x51,
 			0x01, 0x17, 0xF8, 0x2E, 0xB4, 0x28, 0x60, 0x33,
@@ -17,10 +19,33 @@ namespace Passpad.Encryption
 
         private const int PBKDF_ROUNDS = 40000;
 
-		public abstract byte[] EncodeBytes(byte[] data, string password);
-	    public abstract byte[] DecodeBytes(byte[] data, string password);
+		protected abstract byte[] EncodeBytes(byte[] data, string password);
+		protected abstract byte[] DecodeBytes(byte[] data, string password);
 
-	    public static AbstractEncryptionAlgorithm GetAlgorithm(EncryptionAlgorithm algo)
+	    public byte[] Encode(string data, string password)
+	    {
+		    var bdata = EncodeText(data);
+		    var cdata = EncodeBytes(bdata, password);
+
+		    return Concat(ComputeHash(bdata), cdata);
+	    }
+
+		public string Decode(byte[] data, string password)
+		{
+			var bdata = data.Skip(HASH_LENGTH).ToArray();
+			var hash = data.Take(HASH_LENGTH).ToArray();
+
+			var cdata = DecodeBytes(bdata, password);
+
+			if (! hash.SequenceEqual(ComputeHash(cdata)))
+			{
+				throw new Exception("SHA-256 Hash mismatch");
+			}
+
+			return DecodeText(cdata);
+		}
+
+		public static AbstractEncryptionAlgorithm GetAlgorithm(EncryptionAlgorithm algo)
 	    {
 		    switch (algo)
 		    {
@@ -69,12 +94,12 @@ namespace Passpad.Encryption
 			}
 		}
 
-		public static byte[] EncodeText(string text)
+		private byte[] EncodeText(string text)
 		{
 			return Encoding.UTF8.GetBytes(text);
 		}
 
-		public static string DecodeText(byte[] data)
+		private string DecodeText(byte[] data)
 		{
 			return Encoding.UTF8.GetString(data);
 		}

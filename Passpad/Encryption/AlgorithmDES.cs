@@ -9,7 +9,7 @@ namespace Passpad.Encryption
 		private const int IV_SIZE = 8;
 		private const int KEY_SIZE = 24;
 
-		public override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, string password)
 		{
 			using (var des = new DESCryptoServiceProvider())
 			{
@@ -34,7 +34,7 @@ namespace Passpad.Encryption
 			}
 		}
 
-		public override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, string password)
 		{
 			using (var des = new DESCryptoServiceProvider())
 			{

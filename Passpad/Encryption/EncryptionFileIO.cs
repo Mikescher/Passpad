@@ -33,9 +33,7 @@ namespace Passpad
 
 			var bdata = Convert.FromBase64String(data);
 
-			var decoded = AbstractEncryptionAlgorithm.GetAlgorithm(algorithm).DecodeBytes(bdata, password);
-
-			return AbstractEncryptionAlgorithm.DecodeText(decoded);
+			return AbstractEncryptionAlgorithm.GetAlgorithm(algorithm).Decode(bdata, password);
 		}
 
 		public static string ReadPasswordHint(string file)
@@ -48,16 +46,16 @@ namespace Passpad
 
 		public static void SaveFile(string file, string text, string hint, string password, EncryptionAlgorithm algorithm)
 		{
-			var data = AbstractEncryptionAlgorithm.GetAlgorithm(algorithm).EncodeBytes(AbstractEncryptionAlgorithm.EncodeText(text), password);
+			var data = AbstractEncryptionAlgorithm.GetAlgorithm(algorithm).Encode(text, password);
 			var data64 = Convert.ToBase64String(data);
 
 			StringBuilder result = new StringBuilder();
 
 			result.AppendLine(string.Format("<hint>{0}</hint>", SecurityElement.Escape(hint)));
 			result.AppendLine(string.Format("<encrypted algorithm=\"{0}\">", algorithm));
-			for (int i = 0; i < Math.Ceiling(data64.Length / 80.0); i++)
+			for (int i = 0; i < Math.Ceiling(data64.Length / 64.0); i++)
 			{
-				result.AppendLine("    " + data64.Substring(i*80, data64.Length - i*80));
+				result.AppendLine("    " + data64.Substring(i*64, Math.Min(64, data64.Length - i * 64)));
 			}
 			result.AppendLine("</encrypted>");
 

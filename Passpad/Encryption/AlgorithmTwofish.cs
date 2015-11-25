@@ -10,7 +10,7 @@ namespace Passpad.Encryption
 		private const int IV_SIZE = 16;
 		private const int KEY_SIZE = 32;
 
-		public override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, string password)
 		{
 			using (var fish = new Twofish())
 			{
@@ -35,7 +35,7 @@ namespace Passpad.Encryption
 			}
 		}
 
-		public override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, string password)
 		{
 			using (var fish = new Twofish())
 			{
