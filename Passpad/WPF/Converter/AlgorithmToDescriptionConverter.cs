@@ -16,6 +16,7 @@ namespace Passpad.WPF.Converter
 				case EncryptionAlgorithm.Blowfish:
 				case EncryptionAlgorithm.Twofish:
 				case EncryptionAlgorithm.AES:
+				case EncryptionAlgorithm.DES:
 				case EncryptionAlgorithm.TripleDES:
 				case EncryptionAlgorithm.CAST:
 					return "Encrypted text file";

@@ -38,6 +38,8 @@ namespace Passpad.Encryption
 					throw new NotImplementedException();
 				case EncryptionAlgorithm.XOR:
 					return new AlgorithmXOR();
+				case EncryptionAlgorithm.DES:
+					return new AlgorithmDES();
 				default:
 					throw new NotImplementedException();
 			}
