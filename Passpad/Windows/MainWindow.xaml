@@ -11,7 +11,7 @@
 		ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d"
 		Loaded="MainWindow_OnLoaded"
-		Icon="Ressources/icon_lock.png"
+		Icon="../Ressources/icon_lock.png"
         d:DataContext="{d:DesignInstance self:MainViewModel}"
         Title="{Binding Title}" MinHeight="350" MinWidth="525" Height="450" Width="800">
 

@@ -14,10 +14,10 @@ namespace Passpad.WPF.Converter
 				case EncryptionAlgorithm.Plain: return "PLAIN";
 				case EncryptionAlgorithm.Blowfish: return "BLOWFISH";
 				case EncryptionAlgorithm.Twofish: return "TWOFISH";
-				case EncryptionAlgorithm.AES: return "AES";
+				case EncryptionAlgorithm.AES: return "AES-256";
 				case EncryptionAlgorithm.TripleDES: return "TRIPLE DES";
 				case EncryptionAlgorithm.DES: return "DES";
-				case EncryptionAlgorithm.CAST: return "CAST";
+				case EncryptionAlgorithm.CAST: return "CAST-128";
 				case EncryptionAlgorithm.XOR: return "XOR";
 				default: throw new ArgumentOutOfRangeException(nameof(value), value, null);
 			}

@@ -67,6 +67,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Encryption\AlgorithmCAST.cs" />
+    <Compile Include="Encryption\AlgorithmDES.cs" />
     <Compile Include="Encryption\AlgorithmTripleDES.cs" />
     <Compile Include="Encryption\AlgorithmBlowfish.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
@@ -177,6 +179,10 @@
     <ProjectReference Include="..\BlowfishImplementation\BlowfishImplementation.csproj">
       <Project>{53c7c010-730f-417b-bf7f-1d334cb0921f}</Project>
       <Name>BlowfishImplementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CastImplementation\CastImplementation.csproj">
+      <Project>{87d578df-7936-418d-817d-2904600a4cc4}</Project>
+      <Name>CastImplementation</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwoFishImplementation\TwofishImplementation.csproj">
       <Project>{2bc18641-c18b-470f-9741-38006f545a6d}</Project>
