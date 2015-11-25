@@ -29,7 +29,7 @@ namespace Passpad.Encryption
 			    case EncryptionAlgorithm.Blowfish:
 					throw new NotImplementedException();
 				case EncryptionAlgorithm.Twofish:
-					throw new NotImplementedException();
+					return new AlgorithmTwofish();
 				case EncryptionAlgorithm.AES:
 				    return new AlgorithmAES();
 				case EncryptionAlgorithm.TripleDES:
