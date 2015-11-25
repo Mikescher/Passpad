@@ -86,6 +86,8 @@
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Encryption\AbstractEncryptionAlgorithm.cs" />
+    <Compile Include="Encryption\AlgorithmXOR.cs" />
+    <Compile Include="Encryption\AlgorithmTwofish.cs" />
     <Compile Include="Encryption\AlgorithmPLAIN.cs" />
     <Compile Include="Encryption\AlgorithmAES.cs" />
     <Compile Include="Encryption\EncryptionAlgorithm.cs" />

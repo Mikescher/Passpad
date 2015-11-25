@@ -8,6 +8,7 @@ namespace Passpad.Encryption
 		Twofish,
 		AES,
 		TripleDES,
-		CAST
+		CAST,
+		XOR
 	}
 }

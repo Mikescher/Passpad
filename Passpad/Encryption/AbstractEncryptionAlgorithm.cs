@@ -34,8 +34,10 @@ namespace Passpad.Encryption
 				    return new AlgorithmAES();
 				case EncryptionAlgorithm.TripleDES:
 					throw new NotImplementedException();
-			    case EncryptionAlgorithm.CAST:
+				case EncryptionAlgorithm.CAST:
 					throw new NotImplementedException();
+				case EncryptionAlgorithm.XOR:
+					return new AlgorithmXOR();
 				default:
 					throw new NotImplementedException();
 			}
@@ -103,6 +105,15 @@ namespace Passpad.Encryption
 				    ms.Write(buffer, 0, read);
 			    }
 		    }
+	    }
+
+	    protected byte[] TrimRightNull(byte[] data)
+	    {
+		    int len = data.Length;
+
+		    while (len > 0 && data[len - 1] == 0) len--;
+
+		    return data.Take(len).ToArray();
 	    }
     }
 }

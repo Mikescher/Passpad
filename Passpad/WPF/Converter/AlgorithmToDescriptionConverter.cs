@@ -19,6 +19,8 @@ namespace Passpad.WPF.Converter
 				case EncryptionAlgorithm.TripleDES:
 				case EncryptionAlgorithm.CAST:
 					return "Encrypted text file";
+				case EncryptionAlgorithm.XOR:
+					return "Obfuscated text file";
 				default:
 					throw new ArgumentOutOfRangeException(nameof(value), value, null);
 			}

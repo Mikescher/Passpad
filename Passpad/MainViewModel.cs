@@ -197,6 +197,7 @@ namespace Passpad
 				fileContent = Content;
 				filePassword = Password;
 				fileHint = Hint;
+				fileAlgorithm = Algorithm;
 			}
 		    catch (Exception e)
 			{
