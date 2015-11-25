@@ -6,7 +6,7 @@ namespace Passpad.Encryption
 {
 	class AlgorithmXOR : AbstractEncryptionAlgorithm
 	{
-		private const int KEY_SIZE = 32;
+		private const int KEY_SIZE = 16;
 		private readonly byte[] IV = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 		protected override byte[] EncodeBytes(byte[] data, string password)
@@ -33,13 +33,13 @@ namespace Passpad.Encryption
 
 		protected override byte[] DecodeBytes(byte[] data, string password)
 		{
-			using (var fish = new Twofish())
+			using (var algo = new XOR())
 			{
 				var key = HashPassword(password, KEY_SIZE);
 
-				fish.Key = key;
+				algo.Key = key;
 
-				var decryptor = fish.CreateDecryptor(key, IV);
+				var decryptor = algo.CreateDecryptor(key, IV);
 				using (var msDecrypt = new MemoryStream(data))
 				using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
 				{

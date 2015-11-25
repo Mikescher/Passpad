@@ -7,7 +7,7 @@ namespace Passpad.Encryption
 	class AlgorithmDES : AbstractEncryptionAlgorithm
 	{
 		private const int IV_SIZE = 8;
-		private const int KEY_SIZE = 24;
+		private const int KEY_SIZE = 8;
 
 		protected override byte[] EncodeBytes(byte[] data, string password)
 		{

@@ -13,7 +13,8 @@ namespace Passpad.Encryption
 			var scheduledKey = AcedCast5.ScheduleKey(key);
 			var iv = AcedCast5.GetOrdinaryIV(scheduledKey);
 
-			byte[] result = (byte[])data.Clone();
+			byte[] result = (byte[])MakeMultipleLength(data, 8).Clone();
+
 			AcedCast5.EncryptCBC(scheduledKey, result, 0, result.Length, iv);
 			AcedCast5.ClearKey(scheduledKey);
 
@@ -29,7 +30,8 @@ namespace Passpad.Encryption
 			byte[] result = (byte[])data.Clone();
 			AcedCast5.DecryptCBC(scheduledKey, result, 0, result.Length, iv);
 			AcedCast5.ClearKey(scheduledKey);
-			return result;
+
+			return TrimRightNull(result);
 		}
 	}
 }

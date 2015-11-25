@@ -39,7 +39,7 @@ namespace Passpad.Encryption
 
 			if (! hash.SequenceEqual(ComputeHash(cdata)))
 			{
-				throw new Exception("SHA-256 Hash mismatch");
+				throw new PasswordHashMismatchException("SHA-256 Hash mismatch");
 			}
 
 			return DecodeText(cdata);
@@ -133,14 +133,27 @@ namespace Passpad.Encryption
 			    }
 		    }
 	    }
+		
 
-	    protected byte[] TrimRightNull(byte[] data)
-	    {
-		    int len = data.Length;
+		protected byte[] TrimRightNull(byte[] data)
+		{
+			int len = data.Length;
 
-		    while (len > 0 && data[len - 1] == 0) len--;
+			while (len > 0 && data[len - 1] == 0) len--;
 
-		    return data.Take(len).ToArray();
-	    }
-    }
+			return data.Take(len).ToArray();
+		}
+
+		protected byte[] MakeMultipleLength(byte[] data, int div)
+		{
+			int add = (div - (data.Length % div)) % div;
+
+			var rdata = data.AsEnumerable();
+
+			for (int i = 0; i < add; i++)
+				rdata = rdata.Concat(new byte[] {0});
+
+			return rdata.ToArray();
+		}
+	}
 }

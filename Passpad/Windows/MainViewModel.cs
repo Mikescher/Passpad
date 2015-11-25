@@ -149,42 +149,58 @@ namespace Passpad
 			    return;
 		    }
 
-			var hint = EncryptionFileIO.ReadPasswordHint(File);
-
-			if (Password == null)
-		    {
-			    try
-			    {
-				    Password = PasswordDialog.ShowDialog(Owner, hint);
-			    }
-			    catch (Exception e)
-			    {
-				    MessageBox.Show("Encrypted file had an unexpected format", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-				    MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-				    return;
-			    }
-		    }
-
-		    try
-		    {
-			    EncryptionAlgorithm alg;
-				fileContent = EncryptionFileIO.ReadFile(File, Password, out alg);
-			    filePassword = Password;
-			    fileHint = hint;
-			    fileAlgorithm = alg;
-
-			    Content = fileContent;
-			    Password = filePassword;
-			    Hint = fileHint;
-			    Algorithm = fileAlgorithm;
-		    }
-		    catch (Exception e)
+		    string hint;
+            try
 			{
-				MessageBox.Show("Can't read encrypted file (wrong file or password ?)", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+				hint = EncryptionFileIO.ReadPasswordHint(File);
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("Encrypted file had an unexpected format", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
 				MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+				File = null;
+				Content = null;
 				return;
 			}
-	    }
+
+			for (;;)
+		    {
+				if (Password == null)
+				{
+					Password = PasswordDialog.ShowDialog(Owner, hint);
+				}
+
+				try
+				{
+					EncryptionAlgorithm alg;
+					fileContent = EncryptionFileIO.ReadFile(File, Password, out alg);
+					filePassword = Password;
+					fileHint = hint;
+					fileAlgorithm = alg;
+
+					Content = fileContent;
+					Password = filePassword;
+					Hint = fileHint;
+					Algorithm = fileAlgorithm;
+
+					return;
+				}
+				catch (PasswordHashMismatchException)
+				{
+					MessageBox.Show("Encrypted data cannot be verified (wrong password ?)", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+					Password = PasswordDialog.ShowDialog(Owner, hint);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show("Can't read encrypted file (wrong file ?)" + Environment.NewLine + e.GetType().Name, "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+					//MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+					Password = PasswordDialog.ShowDialog(Owner, hint);
+				}
+			}
+		}
 
 	    public bool SaveDocument()
 	    {
@@ -198,6 +214,9 @@ namespace Passpad
 				filePassword = Password;
 				fileHint = Hint;
 				fileAlgorithm = Algorithm;
+
+				RaisePropertyChanged("IsChanged");
+				RaisePropertyChanged("Title");
 			}
 		    catch (Exception e)
 			{
