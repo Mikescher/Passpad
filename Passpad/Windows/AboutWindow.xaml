@@ -7,7 +7,7 @@
         mc:Ignorable="d"
 		ResizeMode="NoResize"
 		WindowStartupLocation="CenterOwner"
-		Icon="Ressources/icon_lock.png"
+		Icon="../Ressources/icon_lock.png"
         Title="AboutWindow" Height="225" Width="300">
     <Grid>
         <Grid.RowDefinitions>
