@@ -33,7 +33,7 @@ namespace Passpad.Encryption
 				case EncryptionAlgorithm.AES:
 				    return new AlgorithmAES();
 				case EncryptionAlgorithm.TripleDES:
-					throw new NotImplementedException();
+					return new AlgorithmTripleDES();
 				case EncryptionAlgorithm.CAST:
 					throw new NotImplementedException();
 				case EncryptionAlgorithm.XOR:

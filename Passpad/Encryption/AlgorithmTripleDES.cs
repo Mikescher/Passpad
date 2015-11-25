@@ -4,23 +4,23 @@ using System.Security.Cryptography;
 
 namespace Passpad.Encryption
 {
-	class AlgorithmAES : AbstractEncryptionAlgorithm
+	class AlgorithmTripleDES : AbstractEncryptionAlgorithm
 	{
-		private const int IV_SIZE = 16;
-		private const int KEY_SIZE = 32;
+		private const int IV_SIZE = 8;
+		private const int KEY_SIZE = 24;
 
 		public override byte[] EncodeBytes(byte[] data, string password)
 		{
-			using (var aes = new AesCryptoServiceProvider())
+			using (var des3 = new TripleDESCryptoServiceProvider())
 			{
 				var key = HashPassword(password, KEY_SIZE);
 				var iv = GenerateSalt(IV_SIZE);
 
-				aes.Mode = CipherMode.CBC;
-				aes.Key = key;
-				aes.IV = iv;
+				des3.Mode = CipherMode.CBC;
+				des3.Key = key;
+				des3.IV = iv;
 
-				var encryptor = aes.CreateEncryptor(key, iv);
+				var encryptor = des3.CreateEncryptor(key, iv);
 				using (var msEncrypt = new MemoryStream())
 				{
 					using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
@@ -36,16 +36,16 @@ namespace Passpad.Encryption
 
 		public override byte[] DecodeBytes(byte[] data, string password)
 		{
-			using (var aes = new AesCryptoServiceProvider())
+			using (var des3 = new TripleDESCryptoServiceProvider())
 			{
 				var key = HashPassword(password, KEY_SIZE);
 				var iv = data.Take(IV_SIZE).ToArray();
 
-				aes.Mode = CipherMode.CBC;
-				aes.Key = key;
-				aes.IV = iv;
+				des3.Mode = CipherMode.CBC;
+				des3.Key = key;
+				des3.IV = iv;
 				
-				var decryptor = aes.CreateDecryptor(key, iv);
+				var decryptor = des3.CreateDecryptor(key, iv);
 				using (var msDecrypt = new MemoryStream(data.Skip(IV_SIZE).ToArray()))
 				using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
 				{

@@ -17,6 +17,7 @@ namespace Passpad.Encryption
 				var key = HashPassword(password, KEY_SIZE);
 				var iv = GenerateSalt(IV_SIZE);
 
+				fish.Mode = CipherMode.CBC;
 				fish.Key = key;
 				fish.IV = iv;
 
@@ -41,6 +42,7 @@ namespace Passpad.Encryption
 				var key = HashPassword(password, KEY_SIZE);
 				var iv = data.Take(IV_SIZE).ToArray();
 
+				fish.Mode = CipherMode.CBC;
 				fish.Key = key;
 				fish.IV = iv;
 
