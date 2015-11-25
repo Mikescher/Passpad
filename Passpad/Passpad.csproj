@@ -67,10 +67,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AboutWindow.xaml.cs">
+    <Compile Include="Encryption\AlgorithmBlowfish.cs" />
+    <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AvalonEditBehaviour.cs" />
+    <Compile Include="WPF\AvalonEditBehaviour.cs" />
     <Compile Include="BaseViewModel\IViewModel.cs" />
     <Compile Include="BaseViewModel\ViewModel.cs" />
     <Compile Include="Dialogs\ChangeAlgorithmDialog.xaml.cs">
@@ -91,12 +92,12 @@
     <Compile Include="Encryption\AlgorithmPLAIN.cs" />
     <Compile Include="Encryption\AlgorithmAES.cs" />
     <Compile Include="Encryption\EncryptionAlgorithm.cs" />
-    <Compile Include="EncryptionFileIO.cs" />
-    <Compile Include="Theme.cs" />
+    <Compile Include="Encryption\EncryptionFileIO.cs" />
+    <Compile Include="Windows\Theme.cs" />
     <Compile Include="WPF\Converter\AlgorithmToDescriptionConverter.cs" />
     <Compile Include="WPF\Converter\AlgorithmToStringConverter.cs" />
     <Compile Include="WPF\Converter\TextToLineCountConverter.cs" />
-    <Page Include="AboutWindow.xaml">
+    <Page Include="Windows\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,7 +117,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -124,9 +125,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CustomCommand.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="WPF\CustomCommand.cs" />
+    <Compile Include="Windows\MainViewModel.cs" />
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -172,9 +173,13 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwoFishImplementation\TwoFishImplementation.csproj">
+    <ProjectReference Include="..\BlowfishImplementation\BlowfishImplementation.csproj">
+      <Project>{53c7c010-730f-417b-bf7f-1d334cb0921f}</Project>
+      <Name>BlowfishImplementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwoFishImplementation\TwofishImplementation.csproj">
       <Project>{2bc18641-c18b-470f-9741-38006f545a6d}</Project>
-      <Name>TwoFishImplementation</Name>
+      <Name>TwofishImplementation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
