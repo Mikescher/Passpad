@@ -8,7 +8,7 @@ namespace Passpad.Encryption
 {
     abstract class AbstractEncryptionAlgorithm
     {
-	    private readonly byte[] SALT = {
+	    private readonly byte[] salt = {
 			0xEF, 0x03, 0x33, 0xC4, 0xEB, 0x4A, 0x06, 0x51,
 			0x01, 0x17, 0xF8, 0x2E, 0xB4, 0x28, 0x60, 0x33,
 			0x06, 0x1E, 0xBC, 0xF2, 0x38, 0x36, 0x62, 0x27,
@@ -25,7 +25,7 @@ namespace Passpad.Encryption
 		    switch (algo)
 		    {
 			    case EncryptionAlgorithm.Plain:
-				    throw new NotImplementedException();
+				    return new AlgorithmPlain();
 			    case EncryptionAlgorithm.Blowfish:
 					throw new NotImplementedException();
 				case EncryptionAlgorithm.Twofish:
@@ -58,18 +58,11 @@ namespace Passpad.Encryption
 	    }
 
 	    protected byte[] HashPassword(string password, int size)
-	    {
-		    try
-		    {
-			    using (var rfc2898 = new Rfc2898DeriveBytes(password, SALT, PBKDF_ROUNDS))
-			    {
-				    return rfc2898.GetBytes(size);
-			    }
-		    }
-		    catch
-		    {
-			    return null;
-		    }
+		{
+			using (var rfc2898 = new Rfc2898DeriveBytes(password, salt, PBKDF_ROUNDS))
+			{
+				return rfc2898.GetBytes(size);
+			}
 		}
 
 		public static byte[] EncodeText(string text)
@@ -102,7 +95,7 @@ namespace Passpad.Encryption
 		    byte[] buffer = new byte[32768];
 		    using (MemoryStream ms = new MemoryStream())
 		    {
-			    while (true)
+			    for (;;)
 			    {
 				    int read = stream.Read(buffer, 0, buffer.Length);
 				    if (read <= 0)
