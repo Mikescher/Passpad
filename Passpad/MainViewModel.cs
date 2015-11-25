@@ -99,6 +99,13 @@ namespace Passpad
 			}
 		}
 
+		private readonly Window Owner;
+
+		public MainViewModel(Window owner)
+		{
+			Owner = owner;
+		}
+
 		public void NewDocument()
 	    {
 		    if (IsChanged)
@@ -128,6 +135,7 @@ namespace Passpad
 		    if (ofd.ShowDialog() ?? false)
 		    {
 			    File = ofd.FileName;
+			    Password = null;
 
 			    ReloadDocument();
 		    }
@@ -141,24 +149,61 @@ namespace Passpad
 			    return;
 		    }
 
-		    fileContent = System.IO.File.ReadAllText(File);
-		    filePassword = null;
-		    fileHint = string.Empty;
+			var hint = EncryptionFileIO.ReadPasswordHint(File);
 
-		    Content = fileContent;
-		    Password = filePassword;
-		    Hint = fileHint;
+			if (Password == null)
+		    {
+			    try
+			    {
+				    Password = PasswordDialog.ShowDialog(Owner, hint);
+			    }
+			    catch (Exception e)
+			    {
+				    MessageBox.Show("Encrypted file had an unexpected format", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+				    MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+				    return;
+			    }
+		    }
+
+		    try
+		    {
+			    EncryptionAlgorithm alg;
+				fileContent = EncryptionFileIO.ReadFile(File, Password, out alg);
+			    filePassword = Password;
+			    fileHint = hint;
+			    fileAlgorithm = alg;
+
+			    Content = fileContent;
+			    Password = filePassword;
+			    Hint = fileHint;
+			    Algorithm = fileAlgorithm;
+		    }
+		    catch (Exception e)
+			{
+				MessageBox.Show("Can't read encrypted file (wrong file or password ?)", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 	    }
 
 	    public bool SaveDocument()
 	    {
 		    if (File == null) return SaveDocumentAs();
 
-		    System.IO.File.WriteAllText(File, Content);
+		    try
+			{
+				EncryptionFileIO.SaveFile(File, Content, Hint, Password, Algorithm);
 
-		    fileContent = Content;
-		    filePassword = Password;
-		    fileHint = Hint;
+				fileContent = Content;
+				filePassword = Password;
+				fileHint = Hint;
+			}
+		    catch (Exception e)
+			{
+				MessageBox.Show("Error saving file", "Write error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(e.ToString(), "Write error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return false;
+		    }
 
 		    return true;
 	    }

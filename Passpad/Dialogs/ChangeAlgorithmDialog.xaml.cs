@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using Passpad.Encryption;
 
 namespace Passpad.Dialogs
@@ -50,6 +51,11 @@ namespace Passpad.Dialogs
 		{
 			DialogResult = false;
 			Close();
+		}
+
+		private void ChangeAlgorithmDialog_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter && BtnOK.IsEnabled) Button_Ok_Click(sender, e);
 		}
 	}
 }

@@ -210,3 +210,11 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+
+##########################################
+################ MY STUFF ################
+##########################################
+
+FodyWeavers.xml
+

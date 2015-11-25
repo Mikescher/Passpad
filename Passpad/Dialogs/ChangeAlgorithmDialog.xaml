@@ -8,6 +8,7 @@
 		ResizeMode="CanResize"
 		WindowStartupLocation="CenterOwner"
 		Icon="../Ressources/icon_lock.png"
+		PreviewKeyDown="ChangeAlgorithmDialog_OnPreviewKeyDown"
         Title="Change password hint" Height="140" Width="300">
     <Window.Resources>
         <converter:AlgorithmToStringConverter x:Key="AlgorithmToStringConverter" />
@@ -33,7 +34,7 @@
 
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Content="Abort" MinWidth="75" Margin="5" Click="Button_Cancel_Click" />
-            <Button Content="OK" MinWidth="75" Margin="5" FontWeight="Bold" Click="Button_Ok_Click" />
+            <Button Content="OK" x:Name="BtnOK" MinWidth="75" Margin="5" FontWeight="Bold" Click="Button_Ok_Click" />
         </StackPanel>
     </Grid>
 </Window>

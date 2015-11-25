@@ -15,7 +15,7 @@ namespace Passpad
 
 		public MainWindow()
 		{
-			Viewmodel = new MainViewModel();
+			Viewmodel = new MainViewModel(this);
             this.DataContext = Viewmodel;
 
 			InitializeComponent();

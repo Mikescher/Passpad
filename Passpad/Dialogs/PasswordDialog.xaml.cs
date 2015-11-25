@@ -1,62 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Passpad.Dialogs
 {
-	/// <summary>
-	/// Interaction logic for ChangePasswordDialog.xaml
-	/// </summary>
-	public partial class ChangePasswordDialog : Window
+	public partial class PasswordDialog
 	{
-		public string Password = null;
-
-		public ChangePasswordDialog()
+		private PasswordDialog()
 		{
 			InitializeComponent();
 		}
 
-		public bool ShowDialog(Window owner, string value)
+		public static string ShowDialog(Window owner, string hint)
 		{
-			Owner = owner;
+			var window = new PasswordDialog {Owner = owner};
+			
+			window.PasswordBox.Focus();
+			window.HintBox.Text = hint;
+			Keyboard.Focus(window.PasswordBox);
 
-			PasswordBox.Password = value;
-			PasswordBox.Focus();
-			Keyboard.Focus(PasswordBox);
-			SetSelection(PasswordBox, PasswordBox.Password.Length, 0);
-
-			if (ShowDialog() ?? false)
+			if (window.ShowDialog() ?? false)
 			{
-				Password = PasswordBox.Password;
-				return true;
+				return window.PasswordBox.Password;
 			}
 			else
 			{
-				Password = null;
-				return false;
+				return string.Empty;
 			}
 		}
 
 		private void Button_Ok_Click(object sender, RoutedEventArgs e)
 		{
 			DialogResult = true;
-			Close();
-		}
-
-		private void Button_Cancel_Click(object sender, RoutedEventArgs e)
-		{
-			DialogResult = false;
 			Close();
 		}
 
@@ -97,7 +73,7 @@ namespace Passpad.Dialogs
 			passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(passwordBox, new object[] { start, length });
 		}
 
-		private void ChangePasswordDialog_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		private void PasswordDialog_OnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter && BtnOK.IsEnabled) Button_Ok_Click(sender, e);
 		}
