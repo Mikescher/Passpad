@@ -28,7 +28,7 @@ namespace Passpad
 
 		private void Command_New_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.NewDocument();
+			Viewmodel.NewDocument(this);
 		}
 
 		private void Command_Open_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace Passpad
 
 		private void Command_Save_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.Document.SaveDocument();
+			Viewmodel.Document.SaveDocument(this);
 		}
 
 		private void Command_Export_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace Passpad
 
 		private void Command_SaveAs_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.Document.SaveDocumentAs();
+			Viewmodel.Document.SaveDocumentAs(this);
 		}
 
 		private void Command_Exit_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -57,7 +57,7 @@ namespace Passpad
 			{
 				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 				{
-					if (!Viewmodel.Document.SaveDocument()) return;
+					if (!Viewmodel.Document.SaveDocument(this)) return;
 				}
 			}
 
@@ -70,7 +70,7 @@ namespace Passpad
 			{
 				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 				{
-					if (!Viewmodel.Document.SaveDocument())
+					if (!Viewmodel.Document.SaveDocument(this))
 					{
 						e.Cancel = true;
 					}

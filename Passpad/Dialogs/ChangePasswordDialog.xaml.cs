@@ -27,7 +27,7 @@ namespace Passpad.Dialogs
 			InitializeComponent();
 		}
 
-		public bool ShowDialog(Window owner, string value)
+		public bool ShowDialog(Window owner, string value, bool showCancel = true)
 		{
 			Owner = owner;
 
@@ -35,6 +35,9 @@ namespace Passpad.Dialogs
 			PasswordBox.Focus();
 			Keyboard.Focus(PasswordBox);
 			SetSelection(PasswordBox, PasswordBox.Password.Length, 0);
+
+			BtnCancel.Visibility = showCancel ? Visibility.Visible : Visibility.Hidden;
+			BtnOK.IsEnabled = ! string.IsNullOrWhiteSpace(PasswordBox.Password);
 
 			if (ShowDialog() ?? false)
 			{
@@ -62,7 +65,14 @@ namespace Passpad.Dialogs
 
 		private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
 		{
-			BtnOK.IsEnabled = ! string.IsNullOrWhiteSpace(PasswordBox.Password);
+			if (PasswordBox.Visibility == Visibility.Visible)
+			{
+				BtnOK.IsEnabled = !string.IsNullOrWhiteSpace(PasswordBox.Password);
+			}
+			else
+			{
+				BtnOK.IsEnabled = !string.IsNullOrWhiteSpace(PasswordBoxPlain.Text);
+			}
 		}
 
 		private void Button_ShowPassword_Clicked(object sender, RoutedEventArgs e)
@@ -105,7 +115,7 @@ namespace Passpad.Dialogs
 				e.Handled = true;
 			}
 
-			if (e.Key == Key.Escape)
+			if (e.Key == Key.Escape && BtnCancel.Visibility == Visibility.Visible)
 			{
 				Button_Cancel_Click(sender, e);
 				e.Handled = true;

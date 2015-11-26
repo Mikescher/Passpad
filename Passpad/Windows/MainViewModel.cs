@@ -73,13 +73,13 @@ namespace Passpad
 			Document = PasspadDocument.NewEmpty();
 		}
 
-		public void NewDocument()
+		public void NewDocument(Window owner)
 	    {
 		    if (Document.IsChanged)
 		    {
 			    if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 			    {
-				    if (!Document.SaveDocument()) return;
+				    if (!Document.SaveDocument(owner)) return;
 			    }
 		    }
 

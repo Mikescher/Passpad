@@ -59,6 +59,9 @@ namespace Passpad.Document
 
 		private PasspadDocument(EncryptionAlgorithm algo, string pw, string content, string hint, string file)
 		{
+			fileAlgorithm = algo;
+			Algorithm = algo;
+
 			filePassword = pw;
 			Password = pw;
 
@@ -71,12 +74,22 @@ namespace Passpad.Document
 			File = file;
 		}
 
-		public bool SaveDocument()
+		public bool SaveDocument(Window owner)
 		{
-			if (File == null) return SaveDocumentAs();
+			if (File == null) return SaveDocumentAs(owner);
 
 			try
 			{
+				while (string.IsNullOrEmpty(Password))
+				{
+					var dialog = new ChangePasswordDialog();
+
+					if (dialog.ShowDialog(owner, string.Empty, false))
+					{
+						Password = dialog.Password;
+					}
+				}
+
 				EncryptionFileIO.SaveFile(File, Content, Hint, Password, Algorithm);
 
 				fileContent = Content;
@@ -97,7 +110,7 @@ namespace Passpad.Document
 			return true;
 		}
 
-		public bool SaveDocumentAs()
+		public bool SaveDocumentAs(Window owner)
 		{
 			var sfd = new SaveFileDialog { Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*" };
 
@@ -105,7 +118,7 @@ namespace Passpad.Document
 			{
 				File = sfd.FileName;
 
-				return SaveDocument();
+				return SaveDocument(owner);
 			}
 
 			return false;
