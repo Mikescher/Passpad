@@ -7,6 +7,7 @@
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:converter="clr-namespace:Passpad.WPF.Converter"
+        xmlns:wpf="clr-namespace:Passpad.WPF"
         WindowStartupLocation="CenterScreen"
 		ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d"
@@ -80,12 +81,14 @@
 
         <Border Grid.Row="2" BorderBrush="Gainsboro" BorderThickness="0,0,2,2">
             <Border BorderBrush="Gray" BorderThickness="2,2,0,0">
-                <avalonedit:TextEditor Margin="2" 
+                <avalonedit:TextEditor wpf:FocusBehavior.FocusFirst="True" Margin="2"
+									   x:Name="Editor"
+									   FontFamily="Courier New"
 									   WordWrap="{Binding WordWrap}"
 									   Foreground="{Binding EditorForeground}"
 									   Background="{Binding EditorBackground}"
 									   ShowLineNumbers="True" 
-									   FontSize="12"
+									   FontSize="14"
 									   HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
                     <i:Interaction.Behaviors>
                         <self:AvalonEditBehaviour TextBinding="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

@@ -19,6 +19,10 @@ namespace Passpad
             this.DataContext = Viewmodel;
 
 			InitializeComponent();
+
+			Editor.Options.EnableHyperlinks = false;
+			Editor.Options.EnableEmailHyperlinks = false;
+			Editor.Options.EnableRectangularSelection = true;
 		}
 
 		private void Command_New_OnExecuted(object sender, ExecutedRoutedEventArgs e)

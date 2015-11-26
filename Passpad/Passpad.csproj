@@ -101,6 +101,7 @@
     <Compile Include="WPF\Converter\AlgorithmToDescriptionConverter.cs" />
     <Compile Include="WPF\Converter\AlgorithmToStringConverter.cs" />
     <Compile Include="WPF\Converter\TextToLineCountConverter.cs" />
+    <Compile Include="WPF\FocusBehavior.cs" />
     <Page Include="Windows\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
