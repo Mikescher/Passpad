@@ -12,6 +12,9 @@ Supports:
  - DES
  - Triple DES
 
+#[Download latest release](https://github.com/Mikescher/Passpad/releases)
+#[Homepage](http://www.mikescher.de/programs/view/Passpad)
+
 ![MainWindow](https://raw.githubusercontent.com/Mikescher/Passpad/master/README-DATA/main.png)
 
 The encrypted data is encoded as base-64 and saved in a simple text-file
