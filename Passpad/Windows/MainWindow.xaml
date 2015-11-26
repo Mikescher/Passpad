@@ -13,8 +13,9 @@
         mc:Ignorable="d"
 		Loaded="MainWindow_OnLoaded"
 		Icon="../Ressources/icon_lock.png"
-        d:DataContext="{d:DesignInstance self:MainViewModel}"
-        Title="{Binding Title}" MinHeight="350" MinWidth="525" Height="450" Width="800">
+        d:DataContext="{d:DesignInstance self:MainObservableObject}"
+		Closing="MainWindow_OnClosing"
+        Title="{Binding Document.WindowTitle}" MinHeight="350" MinWidth="525" Height="450" Width="800">
 
     <Window.Resources>
         <converter:TextToLineCountConverter x:Key="TextToLineCountConverter" /> 
@@ -91,7 +92,7 @@
 									   FontSize="14"
 									   HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
                     <i:Interaction.Behaviors>
-                        <self:AvalonEditBehaviour TextBinding="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <self:AvalonEditBehaviour TextBinding="{Binding Document.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </i:Interaction.Behaviors>
                 </avalonedit:TextEditor>
             </Border>
@@ -116,17 +117,17 @@
             </StatusBar.ItemsPanel>
 
             <StatusBarItem Grid.Column="0">
-                <TextBlock Text="{Binding Algorithm, Converter={StaticResource AlgorithmToDescriptionConverter}}" />
+                <TextBlock Text="{Binding Document.Algorithm, Converter={StaticResource AlgorithmToDescriptionConverter}}" />
             </StatusBarItem>
 
             <Separator Grid.Column="1" />
 
             <StatusBarItem Grid.Column="2">
-                <TextBlock Text="{Binding Content.Length, StringFormat=length: {0}}" />
+                <TextBlock Text="{Binding Document.Content.Length, StringFormat=length: {0}}" />
             </StatusBarItem>
 			
             <StatusBarItem Grid.Column="3">
-                <TextBlock Text="{Binding Content, StringFormat=lines: {0}, Converter={StaticResource TextToLineCountConverter}}" />
+                <TextBlock Text="{Binding Document.Content, StringFormat=lines: {0}, Converter={StaticResource TextToLineCountConverter}}" />
             </StatusBarItem>
 
             <Separator Grid.Column="4" />
@@ -134,8 +135,8 @@
 
             <Separator Grid.Column="6" />
 
-            <StatusBarItem Grid.Column="7">
-                <TextBlock Text="{Binding Algorithm, Converter={StaticResource AlgorithmToStringConverter}}" />
+            <StatusBarItem Grid.Column="7" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+                <TextBlock Text="{Binding Document.Algorithm, Converter={StaticResource AlgorithmToStringConverter}}" />
             </StatusBarItem>
         </StatusBar>
 	</Grid>

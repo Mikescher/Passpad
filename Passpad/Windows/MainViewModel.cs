@@ -1,57 +1,22 @@
 ﻿using System;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Win32;
 using Passpad.BaseViewModel;
 using Passpad.Dialogs;
-using Passpad.Encryption;
+using Passpad.Document;
 
 namespace Passpad
 {
-    class MainViewModel : ViewModel
+    class MainObservableObject : ObservableObject
     {
-		private EncryptionAlgorithm fileAlgorithm = EncryptionAlgorithm.Plain;
-		private EncryptionAlgorithm _algorithm = EncryptionAlgorithm.Plain;
-		public EncryptionAlgorithm Algorithm
-		{
-			get { return _algorithm; }
-			set { _algorithm = value; RaisePropertyChanged(); RaisePropertyChanged("IsChanged"); RaisePropertyChanged("Title"); }
-		}
-
-		private string filePassword = null;
-	    private string _password = null;
-	    public string Password
+	    private PasspadDocument _document;
+	    public PasspadDocument Document
 	    {
-		    get { return _password; }
-		    set { _password = value;  RaisePropertyChanged(); RaisePropertyChanged("IsChanged"); RaisePropertyChanged("Title"); }
-		}
-
-	    private string fileContent = string.Empty;
-		private string _content = string.Empty;
-		public string Content
-		{
-			get { return _content; }
-			set { _content = value; RaisePropertyChanged(); RaisePropertyChanged("IsChanged"); RaisePropertyChanged("Title"); }
-		}
-
-		private string fileHint = string.Empty;
-		private string _hint = string.Empty;
-		public string Hint
-		{
-			get { return _hint; }
-			set { _hint = value; RaisePropertyChanged(); RaisePropertyChanged("IsChanged"); RaisePropertyChanged("Title"); }
-		}
-
-		private string _file = null;
-		public string File
-		{
-			get { return _file; }
-			set { _file = value; RaisePropertyChanged(); RaisePropertyChanged("IsChanged"); RaisePropertyChanged("Title"); }
-		}
-
-	    public bool IsChanged => fileContent != Content || fileHint != Hint || filePassword != Password || fileAlgorithm != Algorithm || File == null;
-
-	    public string Title => string.Format("{0}{1} - Passpad v{2}", IsChanged ? "*" : "", File ?? "new", App.VERSION);
+		    get { return _document; }
+			set { _document = value; RaisePropertyChanged(); }
+	    }
 
 		//###########################################################################
 
@@ -101,31 +66,24 @@ namespace Passpad
 
 		private readonly Window Owner;
 
-		public MainViewModel(Window owner)
+		public MainObservableObject(Window owner)
 		{
 			Owner = owner;
+
+			Document = PasspadDocument.NewEmpty();
 		}
 
 		public void NewDocument()
 	    {
-		    if (IsChanged)
+		    if (Document.IsChanged)
 		    {
 			    if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 			    {
-				    if (!SaveDocument()) return;
+				    if (!Document.SaveDocument()) return;
 			    }
 		    }
 
-		    filePassword = null;
-		    Password = null;
-
-		    fileContent = string.Empty;
-		    Content = string.Empty;
-
-		    fileHint = string.Empty;
-		    Hint = string.Empty;
-
-		    File = null;
+			Document = PasspadDocument.NewEmpty();
 	    }
 
 	    public void LoadDocument()
@@ -134,113 +92,28 @@ namespace Passpad
 
 		    if (ofd.ShowDialog() ?? false)
 		    {
-			    File = ofd.FileName;
-			    Password = null;
-
-			    ReloadDocument();
+			    LoadDocument(ofd.FileName);
 		    }
-	    }
-
-	    public void ReloadDocument()
-	    {
-		    if (File == null)
-		    {
-			    LoadDocument();
-			    return;
-		    }
-
-		    string hint;
-            try
-			{
-				hint = EncryptionFileIO.ReadPasswordHint(File);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show("Encrypted file had an unexpected format", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-				MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-				File = null;
-				Content = null;
-				return;
-			}
-
-			for (;;)
-		    {
-				if (Password == null)
-				{
-					Password = PasswordDialog.ShowDialog(Owner, hint);
-				}
-
-				try
-				{
-					EncryptionAlgorithm alg;
-					fileContent = EncryptionFileIO.ReadFile(File, Password, out alg);
-					filePassword = Password;
-					fileHint = hint;
-					fileAlgorithm = alg;
-
-					Content = fileContent;
-					Password = filePassword;
-					Hint = fileHint;
-					Algorithm = fileAlgorithm;
-
-					return;
-				}
-				catch (PasswordHashMismatchException)
-				{
-					MessageBox.Show("Encrypted data cannot be verified (wrong password ?)", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-					Password = PasswordDialog.ShowDialog(Owner, hint);
-				}
-				catch (Exception e)
-				{
-					MessageBox.Show("Can't read encrypted file (wrong file ?)" + Environment.NewLine + e.GetType().Name, "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-					//MessageBox.Show(e.ToString(), "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-					Password = PasswordDialog.ShowDialog(Owner, hint);
-				}
-			}
 		}
 
-	    public bool SaveDocument()
+		public void LoadDocument(string file)
+		{
+			var newdoc = PasspadDocument.LoadDocument(Owner, file);
+			if (newdoc != null) Document = newdoc;
+		}
+
+		public void ReloadDocument()
 	    {
-		    if (File == null) return SaveDocumentAs();
-
-		    try
-			{
-				EncryptionFileIO.SaveFile(File, Content, Hint, Password, Algorithm);
-
-				fileContent = Content;
-				filePassword = Password;
-				fileHint = Hint;
-				fileAlgorithm = Algorithm;
-
-				RaisePropertyChanged("IsChanged");
-				RaisePropertyChanged("Title");
-			}
-		    catch (Exception e)
-			{
-				MessageBox.Show("Error saving file", "Write error", MessageBoxButton.OK, MessageBoxImage.Error);
-				MessageBox.Show(e.ToString(), "Write error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return false;
-		    }
-
-		    return true;
-	    }
-
-	    public bool SaveDocumentAs()
-	    {
-		    var sfd = new SaveFileDialog {Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*"};
-
-		    if (sfd.ShowDialog() ?? false)
+		    if (Document.File == null)
 		    {
-			    File = sfd.FileName;
-
-			    return SaveDocument();
+			    LoadDocument();
 		    }
-
-		    return false;
-	    }
+		    else
+		    {
+				var newdoc = PasspadDocument.LoadDocument(Owner, Document.File, Document.Password);
+				if (newdoc != null) Document = newdoc;
+		    }
+		}
 
 	    public void ExportDocument()
 	    {
@@ -248,7 +121,7 @@ namespace Passpad
 
 		    if (sfd.ShowDialog() ?? false)
 		    {
-			    System.IO.File.WriteAllText(sfd.FileName, Content);
+			    System.IO.File.WriteAllText(sfd.FileName, Document.Content, Encoding.UTF8);
 		    }
 		}
 
@@ -256,9 +129,9 @@ namespace Passpad
 		{
 			var dialog = new ChangeHintDialog();
 
-			if (dialog.ShowDialog(owner, Hint))
+			if (dialog.ShowDialog(owner, Document.Hint))
 			{
-				Hint = dialog.Hint;
+				Document.Hint = dialog.Hint;
 			}
 		}
 
@@ -266,9 +139,9 @@ namespace Passpad
 		{
 			var dialog = new ChangePasswordDialog();
 
-			if (dialog.ShowDialog(owner, Password))
+			if (dialog.ShowDialog(owner, Document.Password))
 			{
-				Password = dialog.Password;
+				Document.Password = dialog.Password;
 			}
 		}
 
@@ -276,9 +149,9 @@ namespace Passpad
 		{
 			var dialog = new ChangeAlgorithmDialog();
 
-			if (dialog.ShowDialog(owner, Algorithm))
+			if (dialog.ShowDialog(owner, Document.Algorithm))
 			{
-				Algorithm = dialog.Algorithm;
+				Document.Algorithm = dialog.Algorithm;
 			}
 		}
 	}

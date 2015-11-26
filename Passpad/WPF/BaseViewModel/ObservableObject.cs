@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Passpad.BaseViewModel
 {
-    public abstract class ViewModel :IViewModel
+    public abstract class ObservableObject :IViewModel
     {
         private bool _isModified;
         private bool _isLoading;

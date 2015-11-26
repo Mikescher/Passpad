@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -11,11 +12,11 @@ namespace Passpad
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private MainViewModel Viewmodel;
+		private MainObservableObject Viewmodel;
 
 		public MainWindow()
 		{
-			Viewmodel = new MainViewModel(this);
+			Viewmodel = new MainObservableObject(this);
             this.DataContext = Viewmodel;
 
 			InitializeComponent();
@@ -37,7 +38,7 @@ namespace Passpad
 
 		private void Command_Save_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.SaveDocument();
+			Viewmodel.Document.SaveDocument();
 		}
 
 		private void Command_Export_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -47,20 +48,38 @@ namespace Passpad
 
 		private void Command_SaveAs_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.SaveDocumentAs();
+			Viewmodel.Document.SaveDocumentAs();
 		}
 
 		private void Command_Exit_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			if (Viewmodel.IsChanged)
+			if (Viewmodel.Document.IsChanged)
 			{
 				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 				{
-					if (!Viewmodel.SaveDocument()) return;
+					if (!Viewmodel.Document.SaveDocument()) return;
 				}
 			}
 
 			Close();
+		}
+
+		private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+		{
+			if (Viewmodel.Document.IsChanged)
+			{
+				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				{
+					if (!Viewmodel.Document.SaveDocument())
+					{
+						e.Cancel = true;
+					}
+				}
+				else
+				{
+					e.Cancel = true;
+				}
+			}
 		}
 
 		private void Command_Reload_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -74,8 +93,7 @@ namespace Passpad
 
 			if (args.Length >= 2 && File.Exists(args[1]))
 			{
-				Viewmodel.File = args[1];
-				Viewmodel.ReloadDocument();
+				Viewmodel.LoadDocument(args[1]);
 			}
 		}
 
@@ -122,6 +140,11 @@ namespace Passpad
 		private void Command_Help_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			new AboutWindow {Owner = this}.ShowDialog();
+		}
+
+		private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			Viewmodel.ChangeAlgorithm(this);
 		}
 	}
 }

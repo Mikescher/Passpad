@@ -13,11 +13,13 @@ namespace Passpad
 {
 	class EncryptionFileIO
 	{
-		public static string ReadFile(string file, string password, out EncryptionAlgorithm algorithm)
+		public static XDocument ReadFile(string file)
 		{
-			var text = "<data>" + File.ReadAllText(file, Encoding.UTF8) + "</data>";
-			var xdoc = XDocument.Parse(text);
-				
+			return XDocument.Parse("<data>" + File.ReadAllText(file, Encoding.UTF8) + "</data>");
+		}
+
+		public static string ReadFile(XDocument xdoc, string password, out EncryptionAlgorithm algorithm)
+		{
 			if (!Enum.TryParse(xdoc.Root?.Element("encrypted")?.Attribute("algorithm").Value ?? string.Empty, true, out algorithm))
 			{
 				algorithm = EncryptionAlgorithm.Plain;
@@ -36,11 +38,8 @@ namespace Passpad
 			return AbstractEncryptionAlgorithm.GetAlgorithm(algorithm).Decode(bdata, password);
 		}
 
-		public static string ReadPasswordHint(string file)
+		public static string ReadPasswordHint(XDocument xdoc)
 		{
-			var text = "<data>" + File.ReadAllText(file) + "</data>";
-			var xdoc = XDocument.Parse(text);
-
 			return xdoc.Root?.Element("hint")?.Value ?? string.Empty;
 		}
 

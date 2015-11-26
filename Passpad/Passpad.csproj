@@ -67,17 +67,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Encryption\AlgorithmCAST.cs" />
-    <Compile Include="Encryption\AlgorithmDES.cs" />
-    <Compile Include="Encryption\AlgorithmTripleDES.cs" />
-    <Compile Include="Encryption\AlgorithmBlowfish.cs" />
-    <Compile Include="Encryption\PasswordHashMismatchException.cs" />
+    <Compile Include="Document\Encryption\AlgorithmCAST.cs" />
+    <Compile Include="Document\Encryption\AlgorithmDES.cs" />
+    <Compile Include="Document\Encryption\AlgorithmTripleDES.cs" />
+    <Compile Include="Document\Encryption\AlgorithmBlowfish.cs" />
+    <Compile Include="Document\Encryption\PasswordHashMismatchException.cs" />
+    <Compile Include="Document\PasspadDocument.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\AvalonEditBehaviour.cs" />
-    <Compile Include="BaseViewModel\IViewModel.cs" />
-    <Compile Include="BaseViewModel\ViewModel.cs" />
+    <Compile Include="WPF\BaseViewModel\IViewModel.cs" />
+    <Compile Include="WPF\BaseViewModel\ObservableObject.cs" />
     <Compile Include="Dialogs\ChangeAlgorithmDialog.xaml.cs">
       <DependentUpon>ChangeAlgorithmDialog.xaml</DependentUpon>
     </Compile>
@@ -90,13 +91,13 @@
     <Compile Include="Dialogs\ChangePasswordDialog.xaml.cs">
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Encryption\AbstractEncryptionAlgorithm.cs" />
-    <Compile Include="Encryption\AlgorithmXOR.cs" />
-    <Compile Include="Encryption\AlgorithmTwofish.cs" />
-    <Compile Include="Encryption\AlgorithmPLAIN.cs" />
-    <Compile Include="Encryption\AlgorithmAES.cs" />
-    <Compile Include="Encryption\EncryptionAlgorithm.cs" />
-    <Compile Include="Encryption\EncryptionFileIO.cs" />
+    <Compile Include="Document\Encryption\AbstractEncryptionAlgorithm.cs" />
+    <Compile Include="Document\Encryption\AlgorithmXOR.cs" />
+    <Compile Include="Document\Encryption\AlgorithmTwofish.cs" />
+    <Compile Include="Document\Encryption\AlgorithmPLAIN.cs" />
+    <Compile Include="Document\Encryption\AlgorithmAES.cs" />
+    <Compile Include="Document\Encryption\EncryptionAlgorithm.cs" />
+    <Compile Include="Document\Encryption\EncryptionFileIO.cs" />
     <Compile Include="Windows\Theme.cs" />
     <Compile Include="WPF\Converter\AlgorithmToDescriptionConverter.cs" />
     <Compile Include="WPF\Converter\AlgorithmToStringConverter.cs" />

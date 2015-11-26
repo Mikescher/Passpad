@@ -21,6 +21,9 @@ namespace Passpad.Dialogs
 		{
 			Owner = owner;
 
+			AlgorithmBox.Focus();
+			Keyboard.Focus(AlgorithmBox);
+
 			AlgorithmBox.Items.Clear();
 			foreach (var enumvalue in Enum.GetValues(typeof (EncryptionAlgorithm)))
 			{
