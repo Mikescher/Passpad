@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -19,10 +21,10 @@ namespace Passpad.Encryption
 
         private const int PBKDF_ROUNDS = 40000;
 
-		protected abstract byte[] EncodeBytes(byte[] data, string password);
-		protected abstract byte[] DecodeBytes(byte[] data, string password);
+		protected abstract byte[] EncodeBytes(byte[] data, SecureString password);
+		protected abstract byte[] DecodeBytes(byte[] data, SecureString password);
 
-	    public byte[] Encode(string data, string password)
+	    public byte[] Encode(string data, SecureString password)
 	    {
 		    var bdata = EncodeText(data);
 		    var cdata = EncodeBytes(bdata, password);
@@ -30,7 +32,7 @@ namespace Passpad.Encryption
 		    return Concat(ComputeHash(bdata), cdata);
 	    }
 
-		public string Decode(byte[] data, string password)
+		public string Decode(byte[] data, SecureString password)
 		{
 			var bdata = data.Skip(HASH_LENGTH).ToArray();
 			var hash = data.Take(HASH_LENGTH).ToArray();
@@ -86,11 +88,34 @@ namespace Passpad.Encryption
 		    using (var sha = SHA256.Create()) return sha.ComputeHash(data);
 	    }
 
-	    protected byte[] HashPassword(string password, int size)
+	    protected byte[] HashPassword(SecureString password, int size)
 		{
-			using (var rfc2898 = new Rfc2898DeriveBytes(password, salt, PBKDF_ROUNDS))
+			IntPtr bstr = IntPtr.Zero;
+			byte[] workArray = null;
+			try
 			{
-				return rfc2898.GetBytes(size);
+				bstr = Marshal.SecureStringToBSTR(password);
+				unsafe
+				{
+					byte* bstrBytes = (byte*)bstr;
+					workArray = new byte[password.Length * 2];
+
+					for (int i = 0; i < workArray.Length; i++)
+						workArray[i] = *bstrBytes++;
+				}
+
+				using (var rfc2898 = new Rfc2898DeriveBytes(workArray, salt, PBKDF_ROUNDS))
+				{
+					return rfc2898.GetBytes(size);
+				}
+			}
+			finally
+			{
+				if (workArray != null)
+					for (int i = 0; i < workArray.Length; i++)
+						workArray[i] = 0;
+				if (bstr != IntPtr.Zero)
+					Marshal.ZeroFreeBSTR(bstr);
 			}
 		}
 

@@ -139,7 +139,7 @@ namespace Passpad
 		{
 			var dialog = new ChangePasswordDialog();
 
-			if (dialog.ShowDialog(owner, Document.Password))
+			if (dialog.ShowDialog(owner))
 			{
 				Document.Password = dialog.Password;
 			}

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Security;
 using System.Security.Cryptography;
 using TwoFishImplementation;
 
@@ -9,7 +10,7 @@ namespace Passpad.Encryption
 		private const int KEY_SIZE = 16;
 		private readonly byte[] IV = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-		protected override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, SecureString password)
 		{
 			using (var algo = new XOR())
 			{
@@ -31,7 +32,7 @@ namespace Passpad.Encryption
 			}
 		}
 
-		protected override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, SecureString password)
 		{
 			using (var algo = new XOR())
 			{

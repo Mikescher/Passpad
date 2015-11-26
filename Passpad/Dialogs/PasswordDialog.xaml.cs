@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ namespace Passpad.Dialogs
 			InitializeComponent();
 		}
 
-		public static string ShowDialog(Window owner, string hint)
+		public static SecureString ShowDialog(Window owner, string hint)
 		{
 			var window = new PasswordDialog {Owner = owner};
 			
@@ -22,11 +23,26 @@ namespace Passpad.Dialogs
 
 			if (window.ShowDialog() ?? false)
 			{
-				return window.PasswordBox.Password;
+				if (window.PasswordBox.Visibility == Visibility.Visible)
+					return window.PasswordBox.SecurePassword;
+				else
+					return ToSecureString(window.PasswordBoxPlain.Text);
 			}
 			else
 			{
-				return string.Empty;
+				return new SecureString();
+			}
+		}
+
+		private static SecureString ToSecureString(string source)
+		{
+			if (string.IsNullOrWhiteSpace(source))
+				return null;
+			else
+			{
+				var result = new SecureString();
+				foreach (var c in source) result.AppendChar(c);
+				return result;
 			}
 		}
 
@@ -38,7 +54,10 @@ namespace Passpad.Dialogs
 
 		private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
 		{
-			BtnOK.IsEnabled = ! string.IsNullOrWhiteSpace(PasswordBox.Password);
+			if (PasswordBox.Visibility == Visibility.Visible)
+				BtnOK.IsEnabled = !string.IsNullOrWhiteSpace(PasswordBox.Password);
+			else
+				BtnOK.IsEnabled = !string.IsNullOrWhiteSpace(PasswordBoxPlain.Text);
 		}
 
 		private void Button_ShowPassword_Clicked(object sender, RoutedEventArgs e)

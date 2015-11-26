@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Security;
 using System.Security.Cryptography;
 using TwoFishImplementation;
 
@@ -10,7 +11,7 @@ namespace Passpad.Encryption
 		private const int IV_SIZE = 16;
 		private const int KEY_SIZE = 32;
 
-		protected override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, SecureString password)
 		{
 			using (var fish = new Twofish())
 			{
@@ -35,7 +36,7 @@ namespace Passpad.Encryption
 			}
 		}
 
-		protected override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, SecureString password)
 		{
 			using (var fish = new Twofish())
 			{

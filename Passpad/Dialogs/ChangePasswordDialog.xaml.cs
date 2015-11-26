@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,18 +21,17 @@ namespace Passpad.Dialogs
 	/// </summary>
 	public partial class ChangePasswordDialog : Window
 	{
-		public string Password = null;
+		public SecureString Password = null;
 
 		public ChangePasswordDialog()
 		{
 			InitializeComponent();
 		}
 
-		public bool ShowDialog(Window owner, string value, bool showCancel = true)
+		public bool ShowDialog(Window owner, bool showCancel = true)
 		{
 			Owner = owner;
-
-			PasswordBox.Password = value;
+			
 			PasswordBox.Focus();
 			Keyboard.Focus(PasswordBox);
 			SetSelection(PasswordBox, PasswordBox.Password.Length, 0);
@@ -41,13 +41,29 @@ namespace Passpad.Dialogs
 
 			if (ShowDialog() ?? false)
 			{
-				Password = PasswordBox.Password;
+				if (PasswordBox.Visibility == Visibility.Visible)
+					Password = PasswordBox.SecurePassword;
+				else
+					Password = ToSecureString(PasswordBoxPlain.Text);
+
 				return true;
 			}
 			else
 			{
 				Password = null;
 				return false;
+			}
+		}
+
+		private static SecureString ToSecureString(string source)
+		{
+			if (string.IsNullOrWhiteSpace(source))
+				return null;
+			else
+			{
+				var result = new SecureString();
+				foreach (var c in source) result.AppendChar(c);
+				return result;
 			}
 		}
 
@@ -66,13 +82,9 @@ namespace Passpad.Dialogs
 		private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
 		{
 			if (PasswordBox.Visibility == Visibility.Visible)
-			{
 				BtnOK.IsEnabled = !string.IsNullOrWhiteSpace(PasswordBox.Password);
-			}
 			else
-			{
 				BtnOK.IsEnabled = !string.IsNullOrWhiteSpace(PasswordBoxPlain.Text);
-			}
 		}
 
 		private void Button_ShowPassword_Clicked(object sender, RoutedEventArgs e)

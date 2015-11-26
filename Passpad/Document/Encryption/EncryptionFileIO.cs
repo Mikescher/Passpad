@@ -18,7 +18,7 @@ namespace Passpad
 			return XDocument.Parse("<data>" + File.ReadAllText(file, Encoding.UTF8) + "</data>");
 		}
 
-		public static string ReadFile(XDocument xdoc, string password, out EncryptionAlgorithm algorithm)
+		public static string ReadFile(XDocument xdoc, SecureString password, out EncryptionAlgorithm algorithm)
 		{
 			if (!Enum.TryParse(xdoc.Root?.Element("encrypted")?.Attribute("algorithm").Value ?? string.Empty, true, out algorithm))
 			{
@@ -43,7 +43,7 @@ namespace Passpad
 			return xdoc.Root?.Element("hint")?.Value ?? string.Empty;
 		}
 
-		public static void SaveFile(string file, string text, string hint, string password, EncryptionAlgorithm algorithm)
+		public static void SaveFile(string file, string text, string hint, SecureString password, EncryptionAlgorithm algorithm)
 		{
 			var data = AbstractEncryptionAlgorithm.GetAlgorithm(algorithm).Encode(text, password);
 			var data64 = Convert.ToBase64String(data);

@@ -1,4 +1,5 @@
-﻿using Aced.Cryptography;
+﻿using System.Security;
+using Aced.Cryptography;
 
 namespace Passpad.Encryption
 {
@@ -6,7 +7,7 @@ namespace Passpad.Encryption
 	{
 		private const int KEY_SIZE = 56;
 
-		protected override byte[] EncodeBytes(byte[] data, string password)
+		protected override byte[] EncodeBytes(byte[] data, SecureString password)
 		{
 			var key = HashPassword(password, KEY_SIZE);
 
@@ -21,7 +22,7 @@ namespace Passpad.Encryption
 			return result;
 		}
 
-		protected override byte[] DecodeBytes(byte[] data, string password)
+		protected override byte[] DecodeBytes(byte[] data, SecureString password)
 		{
 			var key = HashPassword(password, KEY_SIZE);
 			

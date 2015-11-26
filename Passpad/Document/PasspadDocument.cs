@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,9 +23,9 @@ namespace Passpad.Document
 			set { _algorithm = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(IsChanged)); RaisePropertyChanged(nameof(WindowTitle)); }
 		}
 
-		private string filePassword = null;
-		private string _password = null;
-		public string Password
+		private SecureString filePassword = null;
+		private SecureString _password = null;
+		public SecureString Password
 		{
 			get { return _password; }
 			set { _password = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(IsChanged)); RaisePropertyChanged(nameof(WindowTitle)); }
@@ -57,7 +58,7 @@ namespace Passpad.Document
 
 		public string WindowTitle => string.Format("{0}{1} - Passpad v{2}", IsChanged ? "*" : "", File ?? "new", App.VERSION);
 
-		private PasspadDocument(EncryptionAlgorithm algo, string pw, string content, string hint, string file)
+		private PasspadDocument(EncryptionAlgorithm algo, SecureString pw, string content, string hint, string file)
 		{
 			fileAlgorithm = algo;
 			Algorithm = algo;
@@ -80,11 +81,11 @@ namespace Passpad.Document
 
 			try
 			{
-				while (string.IsNullOrEmpty(Password))
+				while (Password == null || Password.Length == 0)
 				{
 					var dialog = new ChangePasswordDialog();
 
-					if (dialog.ShowDialog(owner, string.Empty, false))
+					if (dialog.ShowDialog(owner, false))
 					{
 						Password = dialog.Password;
 					}
@@ -129,7 +130,7 @@ namespace Passpad.Document
 			return new PasspadDocument(EncryptionAlgorithm.AES, null, string.Empty, string.Empty, null);
 		}
 
-		public static PasspadDocument LoadDocument(Window owner, string filepath, string initialPassword = null)
+		public static PasspadDocument LoadDocument(Window owner, string filepath, SecureString initialPassword = null)
 		{
 			string hint;
 			XDocument xdoc;
