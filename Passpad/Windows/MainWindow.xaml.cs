@@ -68,14 +68,15 @@ namespace Passpad
 		{
 			if (Viewmodel.Document.IsChanged)
 			{
-				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				var mbresult = MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNoCancel);
+                if (mbresult == MessageBoxResult.Yes)
 				{
 					if (!Viewmodel.Document.SaveDocument(this))
 					{
 						e.Cancel = true;
 					}
 				}
-				else
+				else if (mbresult == MessageBoxResult.Cancel)
 				{
 					e.Cancel = true;
 				}
