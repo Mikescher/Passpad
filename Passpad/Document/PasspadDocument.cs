@@ -150,7 +150,12 @@ namespace Passpad.Document
 			var pass = initialPassword;
             for (;;)
 			{
-				if (pass == null) pass = PasswordDialog.ShowDialog(owner, hint);
+				if (pass == null)
+				{
+					pass = PasswordDialog.ShowDialog(owner, hint);
+
+					if (pass == null) return null;
+				}
 
 				try
 				{
@@ -163,14 +168,13 @@ namespace Passpad.Document
 				{
 					MessageBox.Show("Encrypted data cannot be verified (wrong password ?)", "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-					pass = PasswordDialog.ShowDialog(owner, hint);
+					pass = null;
 				}
 				catch (Exception e)
 				{
 					MessageBox.Show("Can't read encrypted file (wrong file ?)" + Environment.NewLine + e.GetType().Name, "Read error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-
-					pass = PasswordDialog.ShowDialog(owner, hint);
+					pass = null;
 				}
 			}
 		}

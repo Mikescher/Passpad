@@ -30,7 +30,7 @@ namespace Passpad.Dialogs
 			}
 			else
 			{
-				return new SecureString();
+				return null;
 			}
 		}
 
@@ -95,6 +95,11 @@ namespace Passpad.Dialogs
 		private void PasswordDialog_OnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter && BtnOK.IsEnabled) Button_Ok_Click(sender, e);
+			if (e.Key == Key.Escape)
+			{
+				DialogResult = false;
+				Close();
+			}
 		}
 	}
 }
