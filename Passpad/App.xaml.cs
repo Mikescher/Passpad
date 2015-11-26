@@ -11,3 +11,8 @@ namespace Passpad
 		public static readonly string VERSION = Assembly.GetEntryAssembly().GetName().Version.ToString();
 	}
 }
+
+
+//TODO Toolbar
+//TODO Password strength meter
+//TODO Generate Password
