@@ -55,7 +55,17 @@ namespace Passpad.Dialogs
 
 		private void ChangeAlgorithmDialog_OnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Enter && BtnOK.IsEnabled) Button_Ok_Click(sender, e);
+			if (e.Key == Key.Enter && BtnOK.IsEnabled)
+			{
+				Button_Ok_Click(sender, e);
+				e.Handled = true;
+			}
+
+			if (e.Key == Key.Escape)
+			{
+				Button_Cancel_Click(sender, e);
+				e.Handled = true;
+			}
 		}
 	}
 }

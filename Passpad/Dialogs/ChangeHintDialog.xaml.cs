@@ -47,5 +47,14 @@ namespace Passpad.Dialogs
 			DialogResult = false;
 			Close();
 		}
+
+		private void ChangeHintDialog_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Escape)
+			{
+				Button_Cancel_Click(sender, e);
+				e.Handled = true;
+			}
+		}
 	}
 }
