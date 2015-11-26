@@ -85,7 +85,7 @@ namespace Passpad
 
 		private void Command_Reload_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.ReloadDocument();
+			Viewmodel.ReloadDocument(this);
 		}
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)

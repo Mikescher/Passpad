@@ -102,8 +102,24 @@ namespace Passpad
 			if (newdoc != null) Document = newdoc;
 		}
 
-		public void ReloadDocument()
+		public void ReloadDocument(Window owner)
 	    {
+			if (Document.IsChanged)
+			{
+				var mbresult = MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNoCancel);
+				if (mbresult == MessageBoxResult.Yes)
+				{
+					if (!Document.SaveDocument(owner))
+					{
+						return;
+					}
+				}
+				else if (mbresult == MessageBoxResult.Cancel)
+				{
+					return;
+				}
+			}
+
 		    if (Document.File == null)
 		    {
 			    LoadDocument();
