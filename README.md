@@ -31,7 +31,7 @@ The file format contains two parts. The plaintext hint and the encrypted data (t
 
 The encrypted data is encoded in base-64. 
 
- - The first 32 byte is the SHA-256 checksum of the unencrypted data (for verification).
+ - The first 32 byte block is the SHA-256 checksum of the unencrypted data (for verification).
  - After that the next bytes are the used IV (length dependent on the algorithm)
  - Then comes the raw encrypted data (encrypted with the specified algorithm)
 
