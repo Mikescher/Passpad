@@ -2,7 +2,7 @@
 using System.Security;
 using BlowFishCS;
 
-namespace Passpad.Encryption
+namespace Passpad.Document.Encryption
 {
 	class AlgorithmBlowfish : AbstractEncryptionAlgorithm
 	{

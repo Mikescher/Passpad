@@ -1,23 +1,22 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Passpad
+namespace Passpad.Windows
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow
 	{
-		private MainObservableObject Viewmodel;
+		private readonly MainObservableObject viewmodel;
 
 		public MainWindow()
 		{
-			Viewmodel = new MainObservableObject(this);
-            this.DataContext = Viewmodel;
+			viewmodel = new MainObservableObject(this);
+			this.DataContext = viewmodel;
 
 			InitializeComponent();
 
@@ -28,36 +27,36 @@ namespace Passpad
 
 		private void Command_New_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.NewDocument(this);
+			viewmodel.NewDocument(this);
 		}
 
 		private void Command_Open_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.LoadDocument();
+			viewmodel.LoadDocument();
 		}
 
 		private void Command_Save_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.Document.SaveDocument(this);
+			viewmodel.Document.SaveDocument(this);
 		}
 
 		private void Command_Export_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.ExportDocument();
+			viewmodel.ExportDocument();
 		}
 
 		private void Command_SaveAs_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.Document.SaveDocumentAs(this);
+			viewmodel.Document.SaveDocumentAs(this);
 		}
 
 		private void Command_Exit_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			if (Viewmodel.Document.IsChanged)
+			if (viewmodel.Document.IsChanged)
 			{
 				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 				{
-					if (!Viewmodel.Document.SaveDocument(this)) return;
+					if (!viewmodel.Document.SaveDocument(this)) return;
 				}
 			}
 
@@ -66,12 +65,12 @@ namespace Passpad
 
 		private void MainWindow_OnClosing(object sender, CancelEventArgs e)
 		{
-			if (Viewmodel.Document.IsChanged)
+			if (viewmodel.Document.IsChanged)
 			{
 				var mbresult = MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNoCancel);
-                if (mbresult == MessageBoxResult.Yes)
+				if (mbresult == MessageBoxResult.Yes)
 				{
-					if (!Viewmodel.Document.SaveDocument(this))
+					if (!viewmodel.Document.SaveDocument(this))
 					{
 						e.Cancel = true;
 					}
@@ -85,7 +84,7 @@ namespace Passpad
 
 		private void Command_Reload_OnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Viewmodel.ReloadDocument(this);
+			viewmodel.ReloadDocument(this);
 		}
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -94,48 +93,48 @@ namespace Passpad
 
 			if (args.Length >= 2 && File.Exists(args[1]))
 			{
-				Viewmodel.LoadDocument(args[1]);
+				viewmodel.LoadDocument(args[1]);
 			}
 		}
 
 		private void MenuItem_View_Normal_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.Theme = Theme.Normal;
+			viewmodel.Theme = Theme.Normal;
 		}
 
 		private void MenuItem_View_Invisible_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.Theme = Theme.Invisible;
+			viewmodel.Theme = Theme.Invisible;
 		}
 
 		private void MenuItem_View_LowContrastDark_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.Theme = Theme.LowContrastDark;
+			viewmodel.Theme = Theme.LowContrastDark;
 		}
 
 		private void MenuItem_View_LowContrastLight_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.Theme = Theme.LowContrastLight;
+			viewmodel.Theme = Theme.LowContrastLight;
 		}
 
 		private void MenuItem_Settings_Password_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.ChangePassword(this);
+			viewmodel.ChangePassword(this);
 		}
 
 		private void MenuItem_Settings_Algorithm_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.ChangeAlgorithm(this);
+			viewmodel.ChangeAlgorithm(this);
 		}
 
 		private void MenuItem_Settings_Hint_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.ChangeHint(this);
+			viewmodel.ChangeHint(this);
 		}
 
 		private void MenuItem_View_WordWrap_OnClick(object sender, RoutedEventArgs e)
 		{
-			Viewmodel.WordWrap = !Viewmodel.WordWrap;
+			viewmodel.WordWrap = !viewmodel.WordWrap;
 		}
 
 		private void Command_Help_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -145,7 +144,7 @@ namespace Passpad
 
 		private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Viewmodel.ChangeAlgorithm(this);
+			viewmodel.ChangeAlgorithm(this);
 		}
 	}
 }

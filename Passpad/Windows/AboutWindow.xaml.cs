@@ -1,14 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Passpad
+namespace Passpad.Windows
 {
 	/// <summary>
 	/// Interaction logic for AboutWindow.xaml
 	/// </summary>
-	public partial class AboutWindow : Window
+	public partial class AboutWindow
 	{
 		public AboutWindow()
 		{

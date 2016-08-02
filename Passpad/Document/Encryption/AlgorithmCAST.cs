@@ -1,7 +1,7 @@
 ﻿using System.Security;
 using Aced.Cryptography;
 
-namespace Passpad.Encryption
+namespace Passpad.Document.Encryption
 {
 	class AlgorithmCAST : AbstractEncryptionAlgorithm
 	{

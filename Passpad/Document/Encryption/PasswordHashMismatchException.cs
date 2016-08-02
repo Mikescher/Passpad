@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Passpad.Encryption
+namespace Passpad.Document.Encryption
 {
 	class PasswordHashMismatchException : Exception
 	{

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Passpad.Document.Encryption;
+using System;
 using System.Windows;
 using System.Windows.Input;
-using Passpad.Encryption;
 
 namespace Passpad.Dialogs
 {
 	/// <summary>
 	/// Interaction logic for ChangeAlgorithmDialog.xaml
 	/// </summary>
-	public partial class ChangeAlgorithmDialog : Window
+	public partial class ChangeAlgorithmDialog
 	{
 		public EncryptionAlgorithm Algorithm = EncryptionAlgorithm.Plain;
 

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Passpad
+namespace Passpad.WPF
 {
 	public static class CustomCommands
 	{

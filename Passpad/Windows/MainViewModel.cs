@@ -1,22 +1,22 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Passpad.Dialogs;
+using Passpad.Document;
+using Passpad.WPF.BaseViewModel;
+using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using Microsoft.Win32;
-using Passpad.BaseViewModel;
-using Passpad.Dialogs;
-using Passpad.Document;
 
-namespace Passpad
+namespace Passpad.Windows
 {
-    class MainObservableObject : ObservableObject
-    {
-	    private PasspadDocument _document;
-	    public PasspadDocument Document
-	    {
-		    get { return _document; }
+	class MainObservableObject : ObservableObject
+	{
+		private PasspadDocument _document;
+		public PasspadDocument Document
+		{
+			get { return _document; }
 			set { _document = value; RaisePropertyChanged(); }
-	    }
+		}
 
 		//###########################################################################
 
@@ -27,26 +27,26 @@ namespace Passpad
 			set { _wordwrap = value; RaisePropertyChanged(); }
 		}
 
-	    private Theme _theme;
+		private Theme _theme;
 		public Theme Theme
 		{
 			get { return _theme; }
 			set { _theme = value; RaisePropertyChanged(); RaisePropertyChanged("EditorForeground"); RaisePropertyChanged("EditorBackground"); }
 		}
 
-	    public Brush EditorForeground
-	    {
-		    get
-		    {
-			    switch (Theme)
-			    {
-				    case Theme.Normal: return Brushes.Black;
-				    case Theme.Invisible: return Brushes.White;
+		public Brush EditorForeground
+		{
+			get
+			{
+				switch (Theme)
+				{
+					case Theme.Normal: return Brushes.Black;
+					case Theme.Invisible: return Brushes.White;
 					case Theme.LowContrastDark: return new SolidColorBrush(Color.FromRgb(128, 128, 128));
 					case Theme.LowContrastLight: return new SolidColorBrush(Color.FromRgb(192, 192, 192));
 					default: throw new ArgumentOutOfRangeException();
-			    }
-		    }
+				}
+			}
 		}
 
 		public Brush EditorBackground
@@ -64,46 +64,46 @@ namespace Passpad
 			}
 		}
 
-		private readonly Window Owner;
+		private readonly Window owner;
 
 		public MainObservableObject(Window owner)
 		{
-			Owner = owner;
+			this.owner = owner;
 
 			Document = PasspadDocument.NewEmpty();
 		}
 
 		public void NewDocument(Window owner)
-	    {
-		    if (Document.IsChanged)
-		    {
-			    if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-			    {
-				    if (!Document.SaveDocument(owner)) return;
-			    }
-		    }
+		{
+			if (Document.IsChanged)
+			{
+				if (MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				{
+					if (!Document.SaveDocument(owner)) return;
+				}
+			}
 
 			Document = PasspadDocument.NewEmpty();
-	    }
+		}
 
-	    public void LoadDocument()
-	    {
-		    var ofd = new OpenFileDialog {Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*"};
+		public void LoadDocument()
+		{
+			var ofd = new OpenFileDialog {Filter = "Encrypted Textfile (*.crypt.txt)|*.crypt.txt|All Files|*"};
 
-		    if (ofd.ShowDialog() ?? false)
-		    {
-			    LoadDocument(ofd.FileName);
-		    }
+			if (ofd.ShowDialog() ?? false)
+			{
+				LoadDocument(ofd.FileName);
+			}
 		}
 
 		public void LoadDocument(string file)
 		{
-			var newdoc = PasspadDocument.LoadDocument(Owner, file);
+			var newdoc = PasspadDocument.LoadDocument(owner, file);
 			if (newdoc != null) Document = newdoc;
 		}
 
 		public void ReloadDocument(Window owner)
-	    {
+		{
 			if (Document.IsChanged)
 			{
 				var mbresult = MessageBox.Show("You have un saved changes.Would you like to save your document?", "Save Your Changes?", MessageBoxButton.YesNoCancel);
@@ -120,25 +120,25 @@ namespace Passpad
 				}
 			}
 
-		    if (Document.File == null)
-		    {
-			    LoadDocument();
-		    }
-		    else
-		    {
-				var newdoc = PasspadDocument.LoadDocument(Owner, Document.File, Document.Password);
+			if (Document.File == null)
+			{
+				LoadDocument();
+			}
+			else
+			{
+				var newdoc = PasspadDocument.LoadDocument(this.owner, Document.File, Document.Password);
 				if (newdoc != null) Document = newdoc;
-		    }
+			}
 		}
 
-	    public void ExportDocument()
-	    {
-		    var sfd = new SaveFileDialog {Filter = "Textfile (*.txt)|*.txt|All Files|*"};
+		public void ExportDocument()
+		{
+			var sfd = new SaveFileDialog {Filter = "Textfile (*.txt)|*.txt|All Files|*"};
 
-		    if (sfd.ShowDialog() ?? false)
-		    {
-			    System.IO.File.WriteAllText(sfd.FileName, Document.Content, Encoding.UTF8);
-		    }
+			if (sfd.ShowDialog() ?? false)
+			{
+				System.IO.File.WriteAllText(sfd.FileName, Document.Content, Encoding.UTF8);
+			}
 		}
 
 		public void ChangeHint(Window owner)

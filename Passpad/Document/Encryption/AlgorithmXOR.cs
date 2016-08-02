@@ -3,7 +3,7 @@ using System.Security;
 using System.Security.Cryptography;
 using TwoFishImplementation;
 
-namespace Passpad.Encryption
+namespace Passpad.Document.Encryption
 {
 	class AlgorithmXOR : AbstractEncryptionAlgorithm
 	{

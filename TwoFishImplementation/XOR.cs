@@ -4,9 +4,6 @@ using System.Security.Cryptography;
 
 namespace TwoFishImplementation
 {
-	/// <summary>
-	/// Summary description for Class1.
-	/// </summary>
 	public sealed class XOR : SymmetricAlgorithm, ICryptoTransform
 	{
 		public XOR() 

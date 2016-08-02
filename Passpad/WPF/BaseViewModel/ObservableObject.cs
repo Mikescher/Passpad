@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Passpad.BaseViewModel
+namespace Passpad.WPF.BaseViewModel
 {
     public abstract class ObservableObject :IViewModel
     {

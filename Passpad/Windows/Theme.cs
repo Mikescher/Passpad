@@ -1,5 +1,5 @@
 ﻿
-namespace Passpad
+namespace Passpad.Windows
 {
 	enum Theme
 	{

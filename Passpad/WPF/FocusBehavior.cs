@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -11,24 +6,24 @@ namespace Passpad.WPF
 {
 	public static class FocusBehavior
 	{
-		public static readonly DependencyProperty FocusFirstProperty =
+		public static readonly DependencyProperty WPFFocusFirstProperty =
 			DependencyProperty.RegisterAttached(
-				"FocusFirst",
+				"WPFFocusFirst",
 				typeof(bool),
 				typeof(Control),
-				new PropertyMetadata(false, OnFocusFirstPropertyChanged));
+				new PropertyMetadata(false, OnWPFFocusFirstPropertyChanged));
 
-		public static bool GetFocusFirst(Control control)
+		public static bool GetWPFFocusFirst(Control control)
 		{
-			return (bool)control.GetValue(FocusFirstProperty);
+			return (bool)control.GetValue(WPFFocusFirstProperty);
 		}
 
-		public static void SetFocusFirst(Control control, bool value)
+		public static void SetWPFFocusFirst(Control control, bool value)
 		{
-			control.SetValue(FocusFirstProperty, value);
+			control.SetValue(WPFFocusFirstProperty, value);
 		}
 
-		static void OnFocusFirstPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+		static void OnWPFFocusFirstPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 		{
 			Control control = obj as Control;
 			if (control == null || !(args.NewValue is bool))

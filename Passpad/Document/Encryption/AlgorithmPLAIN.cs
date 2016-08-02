@@ -1,6 +1,6 @@
 ﻿using System.Security;
 
-namespace Passpad.Encryption
+namespace Passpad.Document.Encryption
 {
 	class AlgorithmPlain : AbstractEncryptionAlgorithm
 	{

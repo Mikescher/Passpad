@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Passpad.BaseViewModel
+namespace Passpad.WPF.BaseViewModel
 {
     public interface IViewModel: INotifyPropertyChanged
     {

@@ -6,7 +6,7 @@ namespace Passpad.Dialogs
 	/// <summary>
 	/// Interaction logic for ChangeHintDialog.xaml
 	/// </summary>
-	public partial class ChangeHintDialog : Window
+	public partial class ChangeHintDialog
 	{
 		public string Hint = null;
 

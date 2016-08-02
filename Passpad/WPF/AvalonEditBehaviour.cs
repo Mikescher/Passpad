@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit;
+using System;
 using System.Windows;
 using System.Windows.Interactivity;
-using ICSharpCode.AvalonEdit;
 
-namespace Passpad
+namespace Passpad.WPF
 {
 	public sealed class AvalonEditBehaviour : Behavior<TextEditor>
 	{
@@ -43,7 +43,7 @@ namespace Passpad
 			DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
 			var behavior = (AvalonEditBehaviour)dependencyObject;
-			var editor = behavior.AssociatedObject as TextEditor;
+			var editor = behavior.AssociatedObject;
 			if (editor?.Document != null)
 			{
 				var caretOffset = editor.CaretOffset;

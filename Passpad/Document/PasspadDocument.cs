@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Win32;
+using Passpad.Dialogs;
+using Passpad.Document.Encryption;
+using Passpad.WPF.BaseViewModel;
+using System;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
-using Microsoft.Win32;
-using Passpad.BaseViewModel;
-using Passpad.Dialogs;
-using Passpad.Encryption;
 
 namespace Passpad.Document
 {
@@ -148,7 +144,7 @@ namespace Passpad.Document
 			}
 
 			var pass = initialPassword;
-            for (;;)
+			for (;;)
 			{
 				if (pass == null)
 				{

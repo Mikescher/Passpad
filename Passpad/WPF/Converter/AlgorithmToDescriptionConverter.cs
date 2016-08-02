@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Passpad.Encryption;
+using Passpad.Document.Encryption;
 
 namespace Passpad.WPF.Converter
 {

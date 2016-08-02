@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 
-namespace Passpad.Encryption
+namespace Passpad.Document.Encryption
 {
 	class AlgorithmDES : AbstractEncryptionAlgorithm
 	{

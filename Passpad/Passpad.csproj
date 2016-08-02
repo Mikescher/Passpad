@@ -103,6 +103,7 @@
     <Compile Include="Windows\Theme.cs" />
     <Compile Include="WPF\Converter\AlgorithmToDescriptionConverter.cs" />
     <Compile Include="WPF\Converter\AlgorithmToStringConverter.cs" />
+    <Compile Include="WPF\Converter\TextToChecksumConverter.cs" />
     <Compile Include="WPF\Converter\TextToLineCountConverter.cs" />
     <Compile Include="WPF\FocusBehavior.cs" />
     <Page Include="Windows\AboutWindow.xaml">

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
 
@@ -10,7 +9,7 @@ namespace Passpad.WPF.Converter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return Regex.Split(value.ToString(), @"\r?\n|\r").Count().ToString();
+			return Regex.Split(value.ToString(), @"\r?\n|\r").Length.ToString();
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
