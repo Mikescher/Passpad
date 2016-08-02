@@ -46,9 +46,15 @@ namespace Passpad.WPF
 			var editor = behavior.AssociatedObject;
 			if (editor?.Document != null)
 			{
-				var caretOffset = editor.CaretOffset;
-				editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-				editor.CaretOffset = Math.Max(0, Math.Min(dependencyPropertyChangedEventArgs.NewValue.ToString().Length, caretOffset));
+				var oldText = editor.Document.Text;
+				var newText = dependencyPropertyChangedEventArgs.NewValue.ToString();
+
+				if (oldText != newText)
+				{
+					var caretOffset = editor.CaretOffset;
+					editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
+					editor.CaretOffset = Math.Max(0, Math.Min(dependencyPropertyChangedEventArgs.NewValue.ToString().Length, caretOffset));
+				}
 			}
 		}
 	}
