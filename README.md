@@ -12,8 +12,8 @@ Supports:
  - DES
  - Triple DES
 
-##[Download latest release](https://github.com/Mikescher/Passpad/releases)
-##[Homepage](http://www.mikescher.de/programs/view/Passpad)
+## [Download latest release](https://github.com/Mikescher/Passpad/releases)  
+## [Homepage](http://www.mikescher.de/programs/view/Passpad)  
 
 ![MainWindow](https://raw.githubusercontent.com/Mikescher/Passpad/master/README-DATA/main.png)
 
@@ -25,7 +25,7 @@ You can optionally specify a password hint for your encrypted files:
 
 ![MainWindow](https://raw.githubusercontent.com/Mikescher/Passpad/master/README-DATA/hint.png)
 
-#File format
+# File format
 
 The file format contains two parts. The plaintext hint and the encrypted data (together with the used encryption algorithm).
 
