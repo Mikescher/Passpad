@@ -1,0 +1,144 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonedit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        xmlns:converter="clr-namespace:Passpad.WPF.Converter"
+        xmlns:wpf="clr-namespace:Passpad.WPF"
+        xmlns:windows="clr-namespace:Passpad.Windows"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PassPad.Windows.MainWindow"
+        WindowStartupLocation="CenterScreen"
+        Loaded="MainWindow_OnLoaded"
+        x:DataType="windows:MainObservableObject"
+        Closing="MainWindow_OnClosing"
+        Title="{Binding Document.WindowTitle}" MinHeight="350" MinWidth="525" Height="450" Width="800">
+
+	<!-- TODO Icon="../Ressources/icon_lock.png" -->
+	
+	<Design.DataContext>
+		<windows:MainObservableObject/>
+	</Design.DataContext>
+
+	<Window.Resources>
+		<converter:TextToLineCountConverter x:Key="TextToLineCountConverter" />
+		<converter:TextToChecksumConverter x:Key="TextToChecksumConverter" />
+		<converter:AlgorithmToStringConverter x:Key="AlgorithmToStringConverter" />
+		<converter:AlgorithmToDescriptionConverter x:Key="AlgorithmToDescriptionConverter" />
+	</Window.Resources>
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		
+		<Menu Grid.Row="0">
+			<MenuItem Header="File">
+				<MenuItem Header="New"  Click="Command_New_OnExecuted" />
+				<MenuItem Header="Open" Click="Command_Open_OnExecuted" />
+				<MenuItem Header="Reload" Click="Command_Save_OnExecuted" />
+				<MenuItem Header="Save" Click="Command_Save_OnExecuted" />
+				<MenuItem Header="Save As" Click="Command_Export_OnExecuted" />
+				<MenuItem Header="Export" Click="Command_Reload_OnExecuted" />
+				<Separator />
+				<!--TODO <MenuItem Header="Exit" Click="Command_Close_OnExecuted" />-->
+			</MenuItem>
+			<MenuItem Header="Edit">
+				<!--TODO <MenuItem Header="Undo" Click="Command_Undo_OnExecuted" /> -->
+				<!--TODO <MenuItem Header="Redo" Click="Command_Redo_OnExecuted" /> -->
+				<Separator />
+				<!--TODO <MenuItem Header="Cut" Click="Command_Cut_OnExecuted" /> -->
+				<!--TODO <MenuItem Header="Copy" Click="Command_Copy_OnExecuted" /> -->
+				<!--TODO <MenuItem Header="Paste" Click="Command_Paste_OnExecuted" /> -->
+			</MenuItem>
+			<MenuItem Header="View">
+				<MenuItem Header="Normal" Click="MenuItem_View_Normal_OnClick" />
+				<MenuItem Header="Invisible" Click="MenuItem_View_Invisible_OnClick" />
+				<MenuItem Header="Low Contrast (Dark)" Click="MenuItem_View_LowContrastDark_OnClick" />
+				<MenuItem Header="Low Contrast (Light)" Click="MenuItem_View_LowContrastLight_OnClick" />
+				<Separator />
+				<MenuItem Header="Word Wrap" Click="MenuItem_View_WordWrap_OnClick" />
+			</MenuItem>
+			<MenuItem Header="Settings">
+				<MenuItem Header="Change Password" Click="MenuItem_Settings_Password_OnClick" />
+				<MenuItem Header="Change Password Hint" Click="MenuItem_Settings_Hint_OnClick" />
+				<MenuItem Header="Change Encryption Algorithm" Click="MenuItem_Settings_Algorithm_OnClick" />
+			</MenuItem>
+			<MenuItem Header="Help">
+				<MenuItem Header="About" Click="Command_Help_OnExecuted" />
+			</MenuItem>
+		</Menu>
+
+		<Border Grid.Row="2" BorderBrush="Gainsboro" BorderThickness="0,0,2,2">
+			<Border BorderBrush="Gray" BorderThickness="2,2,0,0">
+				<!--TODO wpf:FocusBehavior.WPFFocusFirst="True" -->
+				<avalonedit:TextEditor  Margin="2"
+				                        x:Name="Editor"
+				                        FontFamily="Courier New"
+				                        WordWrap="{Binding WordWrap}"
+				                        Foreground="{Binding EditorForeground}"
+				                        Background="{Binding EditorBackground}"
+				                        ShowLineNumbers="True" 
+				                        FontSize="14"
+				                        HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+					<!--TODO
+					<i:Interaction.Behaviors>
+						<wpf:AvalonEditBehaviour TextBinding="{Binding Document.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					</i:Interaction.Behaviors>
+					-->
+				</avalonedit:TextEditor>
+			</Border>
+		</Border>
+
+		<!--TODO
+		<StatusBar Grid.Row="3" >
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="200" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="90" />
+							<ColumnDefinition Width="90" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="100" />
+						</Grid.ColumnDefinitions>
+					</Grid>
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+
+			<StatusBarItem Grid.Column="0">
+				<TextBlock Text="{Binding Document.Algorithm, Converter={StaticResource AlgorithmToDescriptionConverter}}" />
+			</StatusBarItem>
+
+			<Separator Grid.Column="1" />
+
+			<StatusBarItem Grid.Column="2">
+				<TextBlock Text="{Binding Document.Content.Length, StringFormat=length: {0}}" />
+			</StatusBarItem>
+			
+			<StatusBarItem Grid.Column="3">
+				<TextBlock Text="{Binding Document.Content, StringFormat=lines: {0}, Converter={StaticResource TextToLineCountConverter}}" />
+			</StatusBarItem>
+
+			<Separator Grid.Column="4" />
+
+			<StatusBarItem Grid.Column="5">
+				<TextBlock Text="{Binding Document.Content, StringFormat=MD5: {0}, Converter={StaticResource TextToChecksumConverter}}" />
+			</StatusBarItem>
+
+			<Separator Grid.Column="6" />
+
+			<StatusBarItem Grid.Column="7" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+				<TextBlock Text="{Binding Document.Algorithm, Converter={StaticResource AlgorithmToStringConverter}}" />
+			</StatusBarItem>
+		</StatusBar>
+		-->
+	</Grid>
+	
+</Window>
