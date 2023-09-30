@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Passpad.Dialogs;
 using Passpad.Document.Encryption;
 using Passpad.WPF.BaseViewModel;

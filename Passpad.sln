@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlowfishImplementation", "BlowfishImplementation\BlowfishImplementation.csproj", "{53C7C010-730F-417B-BF7F-1D334CB0921F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CastImplementation", "CastImplementation\CastImplementation.csproj", "{87D578DF-7936-418D-817D-2904600A4CC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassPad2", "PassPad2\PassPad2.csproj", "{05669245-5952-4E30-B321-38C1B87265BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{87D578DF-7936-418D-817D-2904600A4CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87D578DF-7936-418D-817D-2904600A4CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87D578DF-7936-418D-817D-2904600A4CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05669245-5952-4E30-B321-38C1B87265BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05669245-5952-4E30-B321-38C1B87265BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05669245-5952-4E30-B321-38C1B87265BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05669245-5952-4E30-B321-38C1B87265BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

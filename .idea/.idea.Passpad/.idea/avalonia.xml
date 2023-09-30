@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="PassPad2/App.axaml" value="PassPad2/PassPad2.csproj" />
+        <entry key="PassPad2/MainWindow.axaml" value="PassPad2/PassPad2.csproj" />
+        <entry key="PassPad2/Windows/MainWindow.axaml" value="PassPad2/PassPad2.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

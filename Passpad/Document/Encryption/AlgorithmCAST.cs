@@ -1,4 +1,4 @@
-﻿using System.Security;
+using System.Security;
 using Aced.Cryptography;
 
 namespace Passpad.Document.Encryption

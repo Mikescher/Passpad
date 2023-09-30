@@ -1,4 +1,4 @@
-﻿//Blowfish encryption (ECB, CBC and CTR mode) as defined by Bruce Schneier here: http://www.schneier.com/paper-blowfish-fse.html
+//Blowfish encryption (ECB, CBC and CTR mode) as defined by Bruce Schneier here: http://www.schneier.com/paper-blowfish-fse.html
 //Complies with test vectors found here: http://www.schneier.com/code/vectors.txt
 //non-standard mode provided to be usable with the javascript crypto library found here: http://etherhack.co.uk/symmetric/blowfish/blowfish.html
 //By Taylor Hornby, 1/7/1010, 

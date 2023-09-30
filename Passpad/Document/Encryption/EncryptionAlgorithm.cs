@@ -1,4 +1,4 @@
-﻿
+
 namespace Passpad.Document.Encryption
 {
 	public enum EncryptionAlgorithm
