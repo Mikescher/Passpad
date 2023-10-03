@@ -1,3 +1,13 @@
+
+
+> =============================================================
+> 
+> <h3>Passpad is no longer under active development</h1>
+> <h3>I recommend migrating to EncryptPad ( https://evpo.net/encryptpad )</h1>
+> 
+> =============================================================
+
+
 Passpad
 -------
 
